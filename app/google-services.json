@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "426149073171",
+    "project_id": "elly-s-mart",
+    "storage_bucket": "elly-s-mart.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426149073171:android:edb602350e8cc63862cae6",
+        "android_client_info": {
+          "package_name": "com.example.ellymartarkedcengal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAOmmWRYQGLRat5TYd97aiUnkL3Xrf-2Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
