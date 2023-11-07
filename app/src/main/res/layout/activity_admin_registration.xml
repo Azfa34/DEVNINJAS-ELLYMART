@@ -9,33 +9,36 @@
 
     <EditText
         android:id="@+id/etAdminName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="321dp"
+        android:layout_height="61dp"
         android:layout_marginTop="80dp"
-        android:hint="Admin Name" />
+        android:hint="Name"
+
+        />
 
     <EditText
         android:id="@+id/etAdminEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="321dp"
+        android:layout_height="61dp"
         android:layout_below="@id/etAdminName"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="25dp"
         android:hint="Admin Email" />
 
     <Button
         android:id="@+id/btnRegisterAdmin"
-        android:layout_width="match_parent"
+        android:layout_width="299dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/etAdminPassword"
         android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
         android:text="Create Account" />
 
     <EditText
         android:id="@+id/etAdminPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="321dp"
+        android:layout_height="61dp"
         android:layout_below="@id/etAdminEmail"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="20dp"
         android:hint="Password"
         android:inputType="textPassword" />
 
