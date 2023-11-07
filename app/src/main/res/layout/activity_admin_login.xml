@@ -5,37 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".AdminRegistration">
-
-    <EditText
-        android:id="@+id/etAdminName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Admin Name" />
+    tools:context=".AdminLogin">
 
     <EditText
         android:id="@+id/etAdminEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etAdminName"
-        android:layout_marginTop="27dp"
         android:hint="Admin Email" />
-
-    <Button
-        android:id="@+id/btnRegisterAdmin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/etAdminPassword"
-        android:layout_marginTop="450dp"
-        android:text="Register" />
 
     <EditText
         android:id="@+id/etAdminPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etAdminEmail"
-        android:layout_marginTop="22dp"
-        android:hint="Password"
-        android:inputType="textPassword" />
+        android:layout_marginTop="100dp"
+        android:hint="Admin Password" />
+
+
+    <Button
+        android:id="@+id/btnAdminLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etAdminPassword"
+        android:layout_marginTop="500dp"
+        android:text="Login" />
+
+    <Button
+        android:id="@+id/btnAdminForgotPass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etAdminPassword"
+        android:layout_marginTop="550dp"
+        android:text="Forgot Password" />
+
 
 </RelativeLayout>
+
