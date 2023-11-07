@@ -11,13 +11,14 @@
         android:id="@+id/etAdminEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="230dp"
         android:hint="Admin Email" />
 
     <EditText
         android:id="@+id/etAdminPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="280dp"
         android:hint="Admin Password" />
 
 
@@ -26,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/etAdminPassword"
-        android:layout_marginTop="500dp"
+        android:layout_marginTop="20dp"
         android:text="Login" />
 
     <Button
@@ -34,8 +35,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/etAdminPassword"
-        android:layout_marginTop="550dp"
+        android:layout_marginTop="65dp"
         android:text="Forgot Password" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="280dp"
+        android:layout_height="230dp"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/iconName" />
 
 
 </RelativeLayout>
