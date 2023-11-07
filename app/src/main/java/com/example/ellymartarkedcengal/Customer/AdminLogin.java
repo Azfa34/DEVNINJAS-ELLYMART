@@ -1,4 +1,4 @@
-package com.example.ellymartarkedcengal;
+package com.example.ellymartarkedcengal.Customer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,10 +9,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.ellymartarkedcengal.R;
+
 public class AdminLogin extends AppCompatActivity {
 
     private EditText adminEmailEditText, adminPasswordEditText;
-    private Button loginButton,forgotPassButton;
+    private Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +24,7 @@ public class AdminLogin extends AppCompatActivity {
         adminEmailEditText = findViewById(R.id.etAdminEmail);
         adminPasswordEditText = findViewById(R.id.etAdminPassword);
         loginButton = findViewById(R.id.btnAdminLogin);
-        forgotPassButton = findViewById(R.id.btnAdminForgotPass);
+
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".AdminRegistration">
+    tools:context=".Customer.AdminRegistration">
 
     <EditText
         android:id="@+id/etAdminName"
@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/etAdminName"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="51dp"
         android:hint="Admin Email" />
 
     <Button
@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/etAdminPassword"
-        android:layout_marginTop="450dp"
+        android:layout_marginTop="351dp"
         android:text="Register" />
 
     <EditText
@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/etAdminEmail"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="60dp"
         android:hint="Password"
         android:inputType="textPassword" />
 
