@@ -2,6 +2,7 @@ package com.example.ellymartarkedcengal;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.View;
@@ -35,6 +36,8 @@ public class AdminRegistration extends AppCompatActivity {
 
                 // Display a message to indicate successful registration
                 Toast.makeText(AdminRegistration.this, "Admin registered successfully!", Toast.LENGTH_SHORT).show();
+
+                startActivity(new Intent(AdminRegistration.this, AdminLogin.class));
             }
         });
     }

@@ -2,6 +2,7 @@ package com.example.ellymartarkedcengal;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.WindowManager;
 
@@ -21,9 +22,19 @@ public class SplashScreen extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                finally
+                {
+                    Intent mainIntent=new Intent(SplashScreen.
+                            this,AdminRegistration.class);
+                    startActivity(mainIntent);
+                }
             }
-
-
         };
-
-    }}
+        thread.start();
+    }
+    @Override
+    protected void onPause(){
+        super.onPause();
+        finish();
+    }
+}
