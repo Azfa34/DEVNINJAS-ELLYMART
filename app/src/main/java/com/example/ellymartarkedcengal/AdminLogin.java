@@ -44,7 +44,7 @@ public class AdminLogin extends AppCompatActivity {
         forgotPassButton = findViewById(R.id.btnAdminForgotPass);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
+                @Override
             public void onClick(View view) {
                 // Retrieve admin login data from the EditText fields
                 String adminEmail = adminEmailEditText.getText().toString();
@@ -52,9 +52,7 @@ public class AdminLogin extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), AdminRegistration.class);
                 startActivity(intent);
                 finish();
-                // You can implement your login logic here, e.g., check if the provided credentials are valid.
 
-                // For this basic example, show a simple message to indicate a successful login.
                 Toast.makeText(AdminLogin.this, "Admin login successful!", Toast.LENGTH_SHORT).show();
 
                 mAuth.signInWithEmailAndPassword(adminEmail, adminPassword)
@@ -75,6 +73,14 @@ public class AdminLogin extends AppCompatActivity {
                                 }
                             }
                         });
+            }
+        });
+        forgotPassButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),ForgotPassword.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

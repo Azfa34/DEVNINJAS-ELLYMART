@@ -51,4 +51,13 @@
         android:textSize="@android:dimen/app_icon_size"
         android:textColor="@color/black"/>
 
+    <Button
+        android:id="@+id/btnAdminLogin"
+        android:layout_width="299dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etAdminPassword"
+        android:layout_marginTop="70dp"
+        android:layout_centerHorizontal="true"
+        android:text="Login" />
+
 </RelativeLayout>

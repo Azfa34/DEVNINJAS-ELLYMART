@@ -25,7 +25,7 @@ public class AdminRegistration extends AppCompatActivity {
     private EditText adminNameEditText, adminEmailEditText, adminPasswordEditText;
     private Button registerButton;
     FirebaseAuth mAuth;
-
+    Button loginButton;
     @Override
     public void onStart() {
         super.onStart();
@@ -36,6 +36,7 @@ public class AdminRegistration extends AppCompatActivity {
             finish();
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +46,15 @@ public class AdminRegistration extends AppCompatActivity {
         adminEmailEditText = findViewById(R.id.etAdminEmail);
         adminPasswordEditText = findViewById(R.id.etAdminPassword);
         registerButton = findViewById(R.id.btnRegisterAdmin);
-
+        loginButton = findViewById(R.id.btnAdminLogin);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),AdminLogin.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,5 +88,6 @@ public class AdminRegistration extends AppCompatActivity {
                         });
             }
         });
+
     }
 }
