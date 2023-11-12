@@ -53,7 +53,6 @@ public class AdminLogin extends AppCompatActivity {
                 startActivity(intent);
                 finish();
 
-                Toast.makeText(AdminLogin.this, "Admin login successful!", Toast.LENGTH_SHORT).show();
 
                 mAuth.signInWithEmailAndPassword(adminEmail, adminPassword)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
