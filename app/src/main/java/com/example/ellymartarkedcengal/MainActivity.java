@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         }
         usersRef = FirebaseDatabase.getInstance().getReference("users");
 
-        NameEditText = findViewById(R.id.editTextName);
+        NameEditText = findViewById(R.id.etAdminName);
         PhoneNumberEditText = findViewById(R.id.editTextPhoneNumber);
         saveButton = findViewById(R.id.buttonSave);
 
