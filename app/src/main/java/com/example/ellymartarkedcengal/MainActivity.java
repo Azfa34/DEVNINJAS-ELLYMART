@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         button = findViewById(R.id.logout);
         textview = findViewById(R.id.user_details);
+        //textview = findViewById(R.id.etAdminName);
         user = auth.getCurrentUser();
         Button btnShowProducts = findViewById(R.id.btnShowProducts);
 
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             textview.setText(user.getEmail());
+            //textview.setText(user.getDisplayName());
         }
 
         String[] items = {"Open", "On Break", "Closed"};
