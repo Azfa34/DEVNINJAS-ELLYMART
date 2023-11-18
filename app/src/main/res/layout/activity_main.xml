@@ -114,12 +114,7 @@
         android:layout_gravity="center"
         android:text="@string/logout" />
 
-    <Button
-        android:id="@+id/btnShowProducts"
-        android:layout_width="299dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Show Products" />
+
 
 
 

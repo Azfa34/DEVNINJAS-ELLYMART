@@ -3,7 +3,7 @@ package com.example.ellymartarkedcengal;
 public class User {
     private String userId;
     private String name;
-    private String phonenumber;
+    private String number;
 
     // Constructors, getters, and setters
 
@@ -12,10 +12,10 @@ public class User {
     }
 
     // Parameterized constructor
-    public User(String userId, String name, String phonenumber) {
+    public User(String userId, String name, String number) {
         this.userId = userId;
         this.name = name;
-        this.phonenumber = phonenumber;
+        this.number = number;
     }
 
     // Getters and setters go here
@@ -37,12 +37,12 @@ public class User {
         this.name = name;
     }
 
-    public String getPhonenumber() {
-        return phonenumber;
+    public String getNumber() {
+        return number;
     }
 
-    public void setPhonenumber(String phonenumber) {
-        this.phonenumber = phonenumber;
+    public void setNumber(String number) {
+        this.number = number;
     }
 }
 
