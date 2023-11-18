@@ -8,19 +8,28 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
    Button button;
+   Button saveButton;
    TextView textview;
+    EditText NameEditText;
+    EditText PhoneNumberEditText;
+   DatabaseReference usersRef;
+
    FirebaseUser user;
 
     @Override
@@ -34,14 +43,27 @@ public class MainActivity extends AppCompatActivity {
         user = auth.getCurrentUser();
         Button btnShowProducts = findViewById(R.id.btnShowProducts);
 
-        if (user == null){
+        if (user == null) {
             Intent intent = new Intent(getApplicationContext(), AdminLogin.class);
             startActivity(intent);
             finish();
-        }
-        else {
+        } else {
             textview.setText(user.getEmail());
+
         }
+        usersRef = FirebaseDatabase.getInstance().getReference("users");
+
+        NameEditText = findViewById(R.id.editTextName);
+        PhoneNumberEditText = findViewById(R.id.editTextPhoneNumber);
+        saveButton = findViewById(R.id.buttonSave);
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveUserDetails();
+            }
+        });
+
 
         String[] items = {"Open", "On Break", "Closed"};
 
@@ -82,5 +104,22 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-}
+
     }
+
+    private void saveUserDetails() {
+        String userId = auth.getCurrentUser().getUid();
+        String name = NameEditText.getText().toString().trim();
+        String phonenumber = PhoneNumberEditText.getText().toString().trim();
+
+        if (!name.isEmpty() && !phonenumber.isEmpty()) {
+            User user = new User(userId, name, phonenumber);
+            // Save user details to Firebase
+            usersRef.child(userId).setValue(user);
+
+            Toast.makeText(MainActivity.this, "Details saved successfully", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(MainActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+        }
+    }
+}

@@ -99,7 +99,7 @@
         android:inputType="phone"/>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonSave"
         android:layout_width="299dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
