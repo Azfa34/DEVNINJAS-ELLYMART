@@ -31,9 +31,6 @@ public class NewItemPage extends AppCompatActivity {
         buttonPickPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Implement photo picking logic, e.g., using Intent.ACTION_PICK
-                // For simplicity, a placeholder is used here
-                // Make sure to handle permissions and actual photo picking
                 imageViewItem.setImageResource(R.drawable.upload);
             }
         });
@@ -50,6 +47,5 @@ public class NewItemPage extends AppCompatActivity {
         String itemPrice = editTextItemPrice.getText().toString();
         String itemDescription = editTextItemDescription.getText().toString();
 
-        // Use these details for saving to a database, cloud storage, etc.
     }
 }
