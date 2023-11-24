@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".NewItemPage">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Item"
+        android:textColor="@color/black"
+        android:textSize="@android:dimen/app_icon_size"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageViewItem"
+        android:layout_width="318dp"
+        android:layout_height="172dp"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/upload"
+        android:layout_marginTop="15dp"
+        tools:layout_editor_absoluteX="62dp"
+        tools:layout_editor_absoluteY="35dp" />
+
+    <Button
+        android:id="@+id/buttonPickPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageViewItem"
+        android:layout_centerHorizontal="true"
+        android:text="Pick Photo"
+        tools:layout_editor_absoluteX="125dp"
+        tools:layout_editor_absoluteY="230dp"
+        android:layout_gravity="center"/>
+
+    <EditText
+        android:id="@+id/editTextItemName"
+        android:layout_width="354dp"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Product Name"
+        android:layout_marginTop="20dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="340dp" />
+
+    <EditText
+        android:id="@+id/editTextItemPrice"
+        android:layout_width="354dp"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Price"
+        android:layout_marginTop="20dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="412dp" />
+
+    <EditText
+        android:id="@+id/editTextItemDescription"
+        android:layout_width="354dp"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Description"
+        android:layout_marginTop="20dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="476dp" />
+
+    <Button
+        android:id="@+id/buttonSaveItem"
+        android:layout_width="299dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextItemDescription"
+        android:layout_centerHorizontal="true"
+        android:text="Save Item"
+        tools:layout_editor_absoluteX="40dp"
+        tools:layout_editor_absoluteY="540dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"/>
+
+
+</LinearLayout>
