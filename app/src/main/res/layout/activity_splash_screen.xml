@@ -8,7 +8,7 @@
     tools:context=".SplashScreen">
 
     <ImageView
-        android:id="@+id/splashscreen"
+        android:id="@+id/splashscreen_"
         android:layout_width="312dp"
         android:layout_height="543dp"
         app:layout_constraintBottom_toBottomOf="parent"
