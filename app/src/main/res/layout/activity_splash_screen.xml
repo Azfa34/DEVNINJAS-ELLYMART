@@ -16,6 +16,6 @@
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/splashscreen"/>
+        app:srcCompat="@dr"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
