@@ -25,7 +25,7 @@ public class SplashScreen extends AppCompatActivity {
                 finally
                 {
                     Intent mainIntent=new Intent(SplashScreen.
-                            this,AdminRegistration.class);
+                            this,Role.class);
                     startActivity(mainIntent);
                 }
             }
