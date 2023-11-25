@@ -7,6 +7,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="16dp"
+    android:background="@color/lightgrey"
     tools:context=".Role">
 
     <TextView
@@ -14,9 +15,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Choose your role"
+        android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="20dp"
-        android:textStyle="bold"
-        android:textColor="@color/black" />
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/adminButton"

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lightgrey"
     tools:context=".AdminLogin">
 
 
@@ -11,7 +12,7 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@color/lightgrey"
+        android:background="@color/darkgrey"
         android:paddingStart="15sp"
         android:paddingTop="15sp"
         android:shadowColor="@color/black"
@@ -43,7 +44,7 @@
     <Button
         android:id="@+id/btnAdminLogin"
         android:layout_width="299dp"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_below="@id/etAdminPassword"
         android:layout_centerHorizontal="true"
         android:text="Login"
@@ -54,20 +55,20 @@
     <Button
         android:id="@+id/btnAdminForgotPass"
         android:layout_width="296dp"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_below="@id/etAdminPassword"
         android:layout_centerHorizontal="true"
         android:text="Forgot Password"
         tools:layout_editor_absoluteX="40dp"
         tools:layout_editor_absoluteY="540dp"
-        android:layout_marginTop="55dp"/>
+        android:layout_marginTop="60dp"/>
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="280dp"
         android:layout_height="230dp"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/icon_name"
+        app:srcCompat="@drawable/icon_name_nobg"
         android:layout_marginTop="75dp"/>
 
 
