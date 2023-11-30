@@ -13,18 +13,11 @@
             android:icon="@drawable/baseline_activity_outlined_24"
             android:title="Activity"
             />
-        <item android:id="@+id/additem"
-            android:icon="@drawable/baseline_additem_box_24"
-            android:title="Add New Item"
-            />
-        <item android:id="@+id/productlist"
-            android:icon="@drawable/baseline_product_list_24"
-            android:title="Product List"
-            />
         <item android:id="@+id/profile"
             android:icon="@drawable/baseline_account_circle_24"
             android:title="Profile"
             />
+
 
     </group>
 </menu>

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="200dp"
     android:padding="20dp"
+    android:orientation="vertical"
     android:background="@color/lightgrey"
     android:gravity="bottom">
     <TextView
@@ -14,5 +15,11 @@
         android:textStyle="bold"
         />
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="(Admin Site)"
+        android:textSize="18dp"
+        android:textColor="@color/black"
+        />
 </LinearLayout>
