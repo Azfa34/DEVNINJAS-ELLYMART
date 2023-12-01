@@ -7,6 +7,7 @@
     android:background="@color/lightgrey"
     android:gravity="bottom">
     <TextView
+        android:id="@+id/ellys_mart_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Elly's Mart"
@@ -16,6 +17,7 @@
         />
 
     <TextView
+        android:id="@+id/admin_site_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(Admin Site)"

@@ -7,7 +7,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Role extends AppCompatActivity {
-
+    private boolean isAdminUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +35,7 @@ public class Role extends AppCompatActivity {
     }
     private void navigateToDashboard(){
         Intent dashboardIntent = new Intent(this,Dashboard.class);
+        dashboardIntent.putExtra("isAdminUser", isAdminUser);
         startActivity(dashboardIntent);
     }
 }
