@@ -30,7 +30,7 @@ public class Role extends AppCompatActivity {
         });
     }
     private void navigateToAdminRegistration(){
-        Intent adminRegistrationIntent = new Intent(this, AdminRegistration.class);
+        Intent adminRegistrationIntent = new Intent(this, Dashboard.class);
         startActivity(adminRegistrationIntent);
     }
     private void navigateToDashboard(){
