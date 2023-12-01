@@ -13,10 +13,6 @@
             android:icon="@drawable/baseline_activity_outlined_24"
             android:title="Activity"
             />
-        <item android:id="@+id/profile"
-            android:icon="@drawable/baseline_account_circle_24"
-            android:title="Profile"
-            />
 
 
     </group>
