@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    android:background="@color/lightgrey"
+    tools:context=".Role">
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose your role"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="21dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/adminButton"
+        android:layout_width="299dp"
+        android:layout_height="wrap_content"
+        android:text="Admin"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/customerButton"
+        android:layout_width="299dp"
+        android:layout_height="wrap_content"
+        android:text="Customer" />
+</LinearLayout>

@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">ELLYMART ARKED CENGAL</string>
+    <string name="open">Open Navigation Drawer</string>
+    <string name="close">Close Navigation Drawer</string>
     <string name="textview">TextView</string>
     <string name="logout">Logout</string>
+
 </resources>

@@ -52,7 +52,7 @@ public class ForgotPassword extends AppCompatActivity {
                 @Override
                 public void onSuccess(Void unused) {
                     Toast.makeText(ForgotPassword.this, "Password reset email sent to " + adminEmailEditText, Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(ForgotPassword.this,AdminLogin.class);
+                    Intent intent = new Intent(ForgotPassword.this, AdminLogin.class);
                     startActivity(intent);
                     finish();
                 }

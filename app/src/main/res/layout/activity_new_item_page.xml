@@ -5,17 +5,21 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:background="@color/lightgrey"
     tools:context=".NewItemPage">
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/darkgrey"
+        android:paddingStart="15sp"
+        android:paddingTop="15sp"
+        android:shadowColor="@color/black"
         android:text="New Item"
         android:textColor="@color/black"
-        android:textSize="@android:dimen/app_icon_size"
-        android:textStyle="bold" />
+        android:textSize="30dp"
+        android:textStyle="bold"/>
 
     <ImageView
         android:id="@+id/imageViewItem"
@@ -35,6 +39,7 @@
         android:layout_below="@id/imageViewItem"
         android:layout_centerHorizontal="true"
         android:text="Pick Photo"
+        android:layout_marginTop="10dp"
         tools:layout_editor_absoluteX="125dp"
         tools:layout_editor_absoluteY="230dp"
         android:layout_gravity="center"/>
@@ -46,9 +51,12 @@
         android:ems="10"
         android:inputType="text"
         android:text="Product Name"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="23dp"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="340dp" />
+        tools:layout_editor_absoluteY="340dp"
+        android:layout_gravity="center" />
 
     <EditText
         android:id="@+id/editTextItemPrice"
@@ -56,10 +64,14 @@
         android:layout_height="48dp"
         android:ems="10"
         android:inputType="text"
-        android:text="Price"
+        android:text="Price (RM)"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="23dp"
         android:layout_marginTop="20dp"
+        android:layout_gravity="center"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="412dp" />
+        tools:layout_editor_absoluteY="412dp"
+        />
 
     <EditText
         android:id="@+id/editTextItemDescription"
@@ -68,21 +80,24 @@
         android:ems="10"
         android:inputType="text"
         android:text="Description"
-        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="23dp"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="476dp" />
 
     <Button
         android:id="@+id/buttonSaveItem"
         android:layout_width="299dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_below="@id/editTextItemDescription"
         android:layout_centerHorizontal="true"
         android:text="Save Item"
         tools:layout_editor_absoluteX="40dp"
         tools:layout_editor_absoluteY="540dp"
         android:layout_marginTop="10dp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 
 
 </LinearLayout>

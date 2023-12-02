@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:background="@color/lightgrey"
     tools:context=".AdminRegistration">
 
     <EditText
@@ -13,8 +13,8 @@
         android:layout_height="61dp"
         android:layout_marginTop="80dp"
         android:hint="Name"
-
-        />
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="23dp" />
 
     <EditText
         android:id="@+id/etAdminEmail"
@@ -22,16 +22,20 @@
         android:layout_height="61dp"
         android:layout_below="@id/etAdminName"
         android:layout_marginTop="25dp"
-        android:hint="Admin Email" />
+        android:hint="Admin Email"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="23dp"/>
 
     <Button
         android:id="@+id/btnRegisterAdmin"
         android:layout_width="299dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_below="@id/etAdminPassword"
-        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
-        android:text="Create Account" />
+        android:text="Create Account"
+        tools:layout_editor_absoluteX="40dp"
+        tools:layout_editor_absoluteY="540dp"
+        android:layout_marginTop="15dp"/>
 
     <EditText
         android:id="@+id/etAdminPassword"
@@ -40,24 +44,33 @@
         android:layout_below="@id/etAdminEmail"
         android:layout_marginTop="20dp"
         android:hint="Password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="23dp"/>
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/darkgrey"
+        android:paddingStart="15sp"
+        android:paddingTop="15sp"
+        android:shadowColor="@color/black"
         android:text="Sign Up"
-        android:textStyle="bold"
-        android:textSize="@android:dimen/app_icon_size"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/btnAdminLogin"
         android:layout_width="299dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_below="@id/etAdminPassword"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="75dp"
         android:layout_centerHorizontal="true"
-        android:text="Login" />
+        android:text="Login"
+        tools:layout_editor_absoluteX="40dp"
+        tools:layout_editor_absoluteY="540dp"
+        />
 
 </RelativeLayout>

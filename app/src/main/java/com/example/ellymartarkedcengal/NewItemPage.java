@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.ellymartarkedcengal.R;
+
 public class NewItemPage extends AppCompatActivity {
 
     private static final int PICK_PHOTO_REQUEST = 1;

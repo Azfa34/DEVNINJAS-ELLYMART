@@ -4,15 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="30dp"
+    android:background="@color/lightgrey"
     tools:context=".AdminLogin">
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/darkgrey"
+        android:paddingStart="15sp"
+        android:paddingTop="15sp"
+        android:shadowColor="@color/black"
+        android:text="Login"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/etAdminEmail"
         android:layout_width="312dp"
         android:layout_height="61dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="230dp"
+        android:layout_marginTop="300dp"
         android:hint="Email"
         android:textAlignment="center" />
 
@@ -22,7 +36,7 @@
         android:layout_width="311dp"
         android:layout_height="61dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="280dp"
+        android:layout_marginTop="370dp"
         android:hint="Password"
         android:textAlignment="center"
         android:inputType="textPassword"/>
@@ -30,27 +44,34 @@
     <Button
         android:id="@+id/btnAdminLogin"
         android:layout_width="299dp"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_below="@id/etAdminPassword"
-        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
-        android:text="Login" />
+        android:text="Login"
+        tools:layout_editor_absoluteX="40dp"
+        tools:layout_editor_absoluteY="540dp"
+        android:layout_marginTop="10dp"/>
 
     <Button
         android:id="@+id/btnAdminForgotPass"
         android:layout_width="296dp"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_below="@id/etAdminPassword"
-        android:layout_marginTop="64dp"
         android:layout_centerHorizontal="true"
-        android:text="Forgot Password" />
+        android:text="Forgot Password"
+        tools:layout_editor_absoluteX="40dp"
+        tools:layout_editor_absoluteY="540dp"
+        android:layout_marginTop="60dp"/>
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="280dp"
         android:layout_height="230dp"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/icon_name" />
+        app:srcCompat="@drawable/icon_name_nobg"
+        android:layout_marginTop="75dp"/>
+
+
 
 
 </RelativeLayout>

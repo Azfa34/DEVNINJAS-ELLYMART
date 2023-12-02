@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/home"
+            android:icon="@drawable/baseline_home_24"
+            android:title="Home"
+            />
+        <item android:id="@+id/wishlist"
+            android:icon="@drawable/baseline_wishlist_add_24"
+            android:title="Wishlist"
+            />
+        <item android:id="@+id/activity"
+            android:icon="@drawable/baseline_activity_outlined_24"
+            android:title="Activity"
+            />
+        <item android:id="@+id/additem"
+            android:icon="@drawable/baseline_additem_box_24"
+            android:title="Add New Item"
+            />
+        <item android:id="@+id/productlist"
+            android:icon="@drawable/baseline_product_list_24"
+            android:title="Product List"
+            />
+        <item android:id="@+id/profile"
+            android:icon="@drawable/baseline_account_circle_24"
+            android:title="Profile"
+            />
+
+    </group>
+</menu>
