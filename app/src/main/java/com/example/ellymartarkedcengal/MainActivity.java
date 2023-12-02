@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,12 +38,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        FirebaseApp.initializeApp(this);
         auth = FirebaseAuth.getInstance();
         button = findViewById(R.id.logout);
         textview = findViewById(R.id.user_details);
         user = auth.getCurrentUser();
         Button btnShowProducts = findViewById(R.id.btnShowProducts);
+
 
         if (user == null) {
             Intent intent = new Intent(getApplicationContext(), AdminLogin.class);
@@ -117,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
         if (!name.isEmpty() && !phonenumber.isEmpty()) {
             User user = new User(userId, name, phonenumber);
             // Save user details to Firebase
+            usersRef.child(userId).setValue(user);
+            usersRef.child(userId).setValue(user);
             usersRef.child(userId).setValue(user);
 
             Toast.makeText(MainActivity.this, "Details saved successfully", Toast.LENGTH_SHORT).show();
