@@ -45,4 +45,18 @@
         tools:layout_editor_absoluteX="125dp"
         tools:layout_editor_absoluteY="230dp" />
 
+    <EditText
+        android:id="@+id/editTextWDescription"
+        android:layout_width="354dp"
+        android:layout_height="48dp"
+        android:ems="50"
+        android:inputType="text"
+        android:hint="Description"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="23dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="340dp"
+        android:layout_gravity="center" />
+
 </LinearLayout>
