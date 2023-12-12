@@ -33,6 +33,7 @@ public class WishlistForm extends AppCompatActivity {
 
         imageView = findViewById(R.id.imageViewItem1);
         Button btnPickPhotoWish = findViewById(R.id.btnPickPhotoWish);
+        Button btnMakeWish = findViewById(R.id.btnMakeWish);
 
         // Initialize Firebase Storage
         storage = FirebaseStorage.getInstance();
@@ -41,7 +42,14 @@ public class WishlistForm extends AppCompatActivity {
         btnPickPhotoWish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 openImagePicker();
+            }
+        });
+        btnMakeWish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadImageToFirebase();
             }
         });
     }
