@@ -51,26 +51,28 @@ public class NewItemPage extends AppCompatActivity {
     }
 
     private void saveNewItem() {
-        String productId = databaseReference.child("products").push().getKey(); // Generate a new key for the product
+
         String itemName = editTextItemName.getText().toString();
-        String itemPriceString = editTextItemPrice.getText().toString();
+        double itemPrice = Double.parseDouble(editTextItemPrice.getText().toString());
         String itemDescription = editTextItemDescription.getText().toString();
 
         // Check if itemPrice is not empty before parsing
-        if (!itemName.isEmpty() && !itemPriceString.isEmpty()) {
-            double itemPrice = Double.parseDouble(itemPriceString);
+        if (!itemName.isEmpty()) {
 
             // Use the productId as the key for the product
-            Products newItem = new Products(productId, itemName, itemPrice, itemDescription);
+            Products newItem = new Products(itemName, itemPrice, itemDescription,0);
+            DatabaseReference newProductRef = databaseReference.child("products").push();
+            String productId = newProductRef.getKey();
+            newItem.setProductId(productId);
 
             // Save the new item to the "products" node with the generated productId
-            databaseReference.child("products").child(productId).setValue(newItem, (error, ref) -> {
-                if (error == null) {
-                    Toast.makeText(NewItemPage.this, "Item saved successfully", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(NewItemPage.this, "Error saving item: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+            newProductRef.setValue(newItem)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(NewItemPage.this, "Item saved successfully", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(NewItemPage.this, "Error saving item: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
         } else {
             Toast.makeText(NewItemPage.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
         }

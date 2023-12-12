@@ -10,7 +10,7 @@ public class Products {
         private int quantity;
 
         // Constructors, getters, and setters
-        public Products(){
+        public Products(String productId, double itemPrice, String itemDescription, int quantity){
 
         }
         public Products(String name, double price, boolean availability, String description, int quantity) {
@@ -21,9 +21,6 @@ public class Products {
                 this.quantity = quantity;
         }
 
-        public Products(String productId, String itemName, double itemPrice, String itemDescription) {
-
-        }
 
         public String getName() {
                 return name;
