@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="@color/lightgrey"
+    >
+
+    <TextView
+        android:id="@+id/textViewEditPro"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/darkgrey"
+        android:paddingStart="15sp"
+        android:paddingTop="15sp"
+        android:shadowColor="@color/black"
+        android:text="Update Product Details"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Name "
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="16dp"
+        android:padding="16dp"/>
+
+    <EditText
+        android:id="@+id/editTextEditName"
+        android:layout_width="354dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="15sp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="23dp"
+        android:ems="20"
+        android:textSize="16dp"
+        android:hint="Product Name"
+        android:inputType="text"
+        android:padding="16dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="340dp" />
+
+    <TextView
+        android:id="@+id/textViewEditPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Price "
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="16dp"
+        android:padding="16dp"/>
+
+    <EditText
+        android:id="@+id/editTextEditPrice"
+        android:layout_width="354dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="15sp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="23dp"
+        android:ems="20"
+        android:textSize="16dp"
+        android:hint="Product Price (RM)"
+        android:inputType="text"
+        android:padding="16dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="340dp" />
+
+    <Button
+        android:id="@+id/btnProductUpdate"
+        android:layout_width="299dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/editTextItemDescription"
+        android:layout_centerHorizontal="true"
+        android:text="Update"
+        tools:layout_editor_absoluteX="40dp"
+        tools:layout_editor_absoluteY="540dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center" />
+</LinearLayout>
+
+
+
+
+
