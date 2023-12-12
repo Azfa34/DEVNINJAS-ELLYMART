@@ -46,6 +46,20 @@
         tools:layout_editor_absoluteY="230dp" />
 
     <EditText
+        android:id="@+id/editTextWName"
+        android:layout_width="354dp"
+        android:layout_height="48dp"
+        android:ems="20"
+        android:inputType="text"
+        android:hint="Product Name"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="23dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="340dp"
+        android:layout_gravity="center" />
+
+    <EditText
         android:id="@+id/editTextWDescription"
         android:layout_width="354dp"
         android:layout_height="48dp"
@@ -57,6 +71,18 @@
         android:layout_marginEnd="23dp"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="340dp"
+        android:layout_gravity="center" />
+
+    <Button
+        android:id="@+id/btnMakeWish"
+        android:layout_width="299dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/editTextItemDescription"
+        android:layout_centerHorizontal="true"
+        android:text="Send"
+        tools:layout_editor_absoluteX="40dp"
+        tools:layout_editor_absoluteY="540dp"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center" />
 
 </LinearLayout>

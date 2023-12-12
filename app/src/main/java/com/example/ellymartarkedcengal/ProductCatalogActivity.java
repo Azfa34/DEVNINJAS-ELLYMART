@@ -25,7 +25,7 @@ public class ProductCatalogActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_product_catalog);
+        setContentView(R.layout.activity_admin_product_catalog);
 
         // Initialize your product list (you might fetch it from Firebase)
         productList = new ArrayList<>();
