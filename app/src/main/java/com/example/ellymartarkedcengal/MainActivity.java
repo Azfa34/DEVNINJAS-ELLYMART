@@ -120,8 +120,7 @@ public class MainActivity extends AppCompatActivity {
             User user = new User(userId, name, phonenumber);
             // Save user details to Firebase
             usersRef.child(userId).setValue(user);
-            usersRef.child(userId).setValue(user);
-            usersRef.child(userId).setValue(user);
+
 
             Toast.makeText(MainActivity.this, "Details saved successfully", Toast.LENGTH_SHORT).show();
         } else {

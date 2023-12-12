@@ -2,6 +2,7 @@ package com.example.ellymartarkedcengal;
 
 public class Products {
 
+        private String productId;
         private String name;
         private double price;
         private boolean availability;
@@ -9,6 +10,9 @@ public class Products {
         private int quantity;
 
         // Constructors, getters, and setters
+        public Products(){
+
+        }
         public Products(String name, double price, boolean availability, String description, int quantity) {
                 this.name = name;
                 this.price = price;
@@ -16,6 +20,11 @@ public class Products {
                 this.description = description;
                 this.quantity = quantity;
         }
+
+        public Products(String productId, String itemName, double itemPrice, String itemDescription) {
+
+        }
+
         public String getName() {
                 return name;
         }
@@ -54,6 +63,14 @@ public class Products {
 
         public void setQuantity(int quantity) {
                 this.quantity = quantity;
+        }
+
+        public String getProductId() {
+                return productId;
+        }
+
+        public void setProductId(String productId) {
+                this.productId = productId;
         }
 }
 
