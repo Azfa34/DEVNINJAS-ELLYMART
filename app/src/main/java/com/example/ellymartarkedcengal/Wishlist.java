@@ -1,38 +1,31 @@
 package com.example.ellymartarkedcengal;
 
 public class Wishlist {
-
-    private String imageUrl;
-    private String wishDescription;
-    // Add other fields as needed
+    private String itemName;
+    private String itemDescription;
 
     // Required empty constructor for Firebase
     public Wishlist() {
     }
 
-    public Wishlist(String imageUrl, String wishDescription) {
-        this.imageUrl = imageUrl;
-        this.wishDescription = wishDescription;
-        // Initialize other fields as needed
+    public Wishlist(String itemName, String itemDescription) {
+        this.itemName = itemName;
+        this.itemDescription = itemDescription;
     }
 
-
-    public String getImageUrl() {
-        return imageUrl;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
-    public String getWishDescription() {
-        return wishDescription;
+    public String getItemDescription() {
+        return itemDescription;
     }
 
-    public void setWishDescription(String wishDescription) {
-        this.wishDescription = wishDescription;
+    public void setItemDescription(String itemDescription) {
+        this.itemDescription = itemDescription;
     }
-
-    // Add getters and setters for other fields as needed
 }
-

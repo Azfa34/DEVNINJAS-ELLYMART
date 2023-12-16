@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -26,11 +27,13 @@ public class WishlistForm extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     DatabaseReference wishesRef;
     private ImageView imageView;
+    EditText WishItemNameEditText;
+    EditText WishItemNameDescription;
     private Uri selectedImageUri;
 
     // Firebase Storage
-    private FirebaseStorage storage;
-    private StorageReference storageReference;
+     FirebaseStorage storage;
+     StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,9 @@ public class WishlistForm extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
+
+        WishItemNameEditText = findViewById(R.id.editTextWName);
+        WishItemNameDescription = findViewById(R.id.editTextWDescription);
         btnPickPhotoWish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +62,7 @@ public class WishlistForm extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                uploadImageToFirebase();
+                saveWishlistToFirebase();
             }
         });
     }
@@ -83,52 +89,63 @@ public class WishlistForm extends AppCompatActivity {
         }
     }
 
-    private void uploadImageToFirebase() {
-        if (selectedImageUri != null) {
-            StorageReference imageRef = storageReference.child("images/" + System.currentTimeMillis() + ".jpg");
+    private void saveWishlistToFirebase() {
+        String itemName = WishItemNameEditText.getText().toString().trim();
+        String itemDescription = WishItemNameDescription.getText().toString().trim();
 
-            imageView.setDrawingCacheEnabled(true);
-            imageView.buildDrawingCache();
-            Bitmap bitmap = imageView.getDrawingCache();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] data = baos.toByteArray();
+        if (!itemName.isEmpty() && !itemDescription.isEmpty()) {
+            // Save the wishlist item name and description first
 
-            // Upload image to Firebase Storage
-            UploadTask uploadTask = imageRef.putBytes(data);
+            // Creating a new Wish object
+            Wishlist wishlist = new Wishlist(itemName, itemDescription);
 
-            uploadTask.addOnSuccessListener(taskSnapshot -> {
+            wishesRef.child(itemName).setValue(wishlist);
+                        // After successfully saving the name and description
+                        Toast.makeText(WishlistForm.this, "Successful", Toast.LENGTH_SHORT).show();
+                        // Proceed with any additional actions if needed
+                    }
+                   else{
+                        Toast.makeText(WishlistForm.this, "Failed to submit wishlist item", Toast.LENGTH_SHORT).show();
+                    }
+        }
 
-                imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                    String downloadUrl = uri.toString();
 
-                    saveDownloadUrlToDatabase(downloadUrl);
-                }).addOnFailureListener(e -> {
-                    e.printStackTrace();
-                });
+
+/* private void uploadImageToFirebaseStorage(String wishKey) {
+        StorageReference imageRef = storageReference.child("images/" + wishKey + ".jpg");
+
+        imageView.setDrawingCacheEnabled(true);
+        imageView.buildDrawingCache();
+        Bitmap bitmap = imageView.getDrawingCache();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        // Upload image to Firebase Storage
+        UploadTask uploadTask = imageRef.putBytes(data);
+
+        uploadTask.addOnSuccessListener(taskSnapshot -> {
+            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                String downloadUrl = uri.toString();
+
+                // Update the wish with the download URL
+                DatabaseReference wishToUpdateRef = FirebaseDatabase.getInstance().getReference().child("wishes").child(wishKey);
+                wishToUpdateRef.child("imageUrl").setValue(downloadUrl)
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(WishlistForm.this, "Wish submitted successfully", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(WishlistForm.this, Dashboard.class));
+                        })
+                        .addOnFailureListener(e -> {
+                            e.printStackTrace();
+                            Toast.makeText(WishlistForm.this, "Failed to update wish with download URL", Toast.LENGTH_SHORT).show();
+                        });
             }).addOnFailureListener(e -> {
                 e.printStackTrace();
-                // Handle failure to upload image
             });
-        }
-    }
+        }).addOnFailureListener(e -> {
+            e.printStackTrace();
+            // Handle failure to upload image
+        });
+    }*/
 
-    private void saveDownloadUrlToDatabase(String downloadUrl) {
-
-        // Creating a new Wish object
-        Wishlist newWish = new Wishlist(downloadUrl, "My Wishlist Description");
-
-        DatabaseReference wishesRef = FirebaseDatabase.getInstance().getReference().child("wishes");
-        wishesRef.push().setValue(newWish)
-                .addOnSuccessListener(aVoid -> {
-
-                    Toast.makeText(WishlistForm.this, "Wish submitted successfully", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(WishlistForm.this, Dashboard.class));
-                })
-                .addOnFailureListener(e -> {
-                    e.printStackTrace();
-
-                    Toast.makeText(WishlistForm.this, "Failed to submit wish", Toast.LENGTH_SHORT).show();
-                });
-    }
 }
