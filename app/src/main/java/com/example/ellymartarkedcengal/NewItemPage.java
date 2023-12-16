@@ -29,6 +29,7 @@ public class NewItemPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_item_page);
+        FirebaseApp.initializeApp(this);
         databaseReference = FirebaseDatabase.getInstance().getReference();
         imageViewItem = findViewById(R.id.imageViewItem);
         buttonPickPhoto = findViewById(R.id.buttonPickPhoto);
@@ -60,7 +61,7 @@ public class NewItemPage extends AppCompatActivity {
         if (!itemName.isEmpty()) {
 
             // Use the productId as the key for the product
-            Products newItem = new Products(itemName, itemPrice, itemDescription,0);
+            Products newItem = new Products(itemName, itemPrice, itemDescription);
             DatabaseReference newProductRef = databaseReference.child("products").push();
             String productId = newProductRef.getKey();
             newItem.setProductId(productId);

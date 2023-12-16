@@ -2,7 +2,7 @@ package com.example.ellymartarkedcengal;
 
 import android.content.Intent;
 import android.view.View;
-
+import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,14 +14,18 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
-
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.ellymartarkedcengal.EditAdminInfoActivity;
 
 public class Dashboard extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
+    TextView adminInfoTextView;
+     Button btnEditAdminInfo;
+    private static final int EDIT_ADMIN_INFO_REQUEST = 1;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -36,6 +40,8 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        adminInfoTextView = findViewById(R.id.adminInfoTextView);
+        btnEditAdminInfo = findViewById(R.id.btnEditAdminInfo);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
@@ -47,7 +53,22 @@ public class Dashboard extends AppCompatActivity {
         boolean isAdminUser = intent.getBooleanExtra("isAdminUser", true);
 
         setNavigationViewHeader(isAdminUser);
+        updateAdminInfoDisplay();
+        btnEditAdminInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openEditAdminInfoActivity();
+            }
+        });
 
+        Button btnExitEditing = findViewById(R.id.btnExitEditing);
+        btnExitEditing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                btnEditAdminInfo.setEnabled(true);
+            }
+        });
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -116,5 +137,34 @@ public class Dashboard extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+    private void openEditAdminInfoActivity() {
+        Intent intent = new Intent(this, EditAdminInfoActivity.class);
+        intent.putExtra("existingAdminInfo", adminInfoTextView.getText().toString());
+        intent.putExtra("isEditingMode", true);
+        startActivityForResult(intent, EDIT_ADMIN_INFO_REQUEST);
+    }
+
+    private void updateAdminInfoDisplay() {
+
+        adminInfoTextView.setText("Admin Name: John Doe\nAdmin Email: john.doe@example.com");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_ADMIN_INFO_REQUEST && resultCode == RESULT_OK) {
+            if (data != null) {
+                String editedAdminInfo = data.getStringExtra("editedAdminInfo");
+                boolean isEditingMode = data.getBooleanExtra("isEditingMode", false);
+
+                adminInfoTextView.setText(editedAdminInfo);
+
+                if (!isEditingMode) {
+                    btnEditAdminInfo.setEnabled(true);
+                }
+            }
+        }
+    }
 }
+
 

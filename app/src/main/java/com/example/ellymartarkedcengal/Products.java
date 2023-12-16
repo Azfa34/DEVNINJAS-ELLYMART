@@ -10,7 +10,7 @@ public class Products {
         private int quantity;
 
         // Constructors, getters, and setters
-        public Products(String productId, double itemPrice, String itemDescription, int quantity){
+        public Products(String productId, double itemPrice, String itemDescription){
 
         }
         public Products(String name, double price, boolean availability, String description, int quantity) {
