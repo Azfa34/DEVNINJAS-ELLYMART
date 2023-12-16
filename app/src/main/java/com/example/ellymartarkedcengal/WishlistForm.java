@@ -8,8 +8,14 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -18,7 +24,7 @@ import java.io.IOException;
 
 public class WishlistForm extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
-
+    DatabaseReference wishesRef;
     private ImageView imageView;
     private Uri selectedImageUri;
 
@@ -30,11 +36,11 @@ public class WishlistForm extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishlist_form);
-
+        FirebaseApp.initializeApp(this);
         imageView = findViewById(R.id.imageViewItem1);
         Button btnPickPhotoWish = findViewById(R.id.btnPickPhotoWish);
         Button btnMakeWish = findViewById(R.id.btnMakeWish);
-
+        wishesRef = FirebaseDatabase.getInstance().getReference();
         // Initialize Firebase Storage
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -49,6 +55,7 @@ public class WishlistForm extends AppCompatActivity {
         btnMakeWish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 uploadImageToFirebase();
             }
         });
@@ -95,10 +102,33 @@ public class WishlistForm extends AppCompatActivity {
                 imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                     String downloadUrl = uri.toString();
 
+                    saveDownloadUrlToDatabase(downloadUrl);
+                }).addOnFailureListener(e -> {
+                    e.printStackTrace();
                 });
             }).addOnFailureListener(e -> {
                 e.printStackTrace();
+                // Handle failure to upload image
             });
         }
+    }
+
+    private void saveDownloadUrlToDatabase(String downloadUrl) {
+
+        // Creating a new Wish object
+        Wishlist newWish = new Wishlist(downloadUrl, "My Wishlist Description");
+
+        DatabaseReference wishesRef = FirebaseDatabase.getInstance().getReference().child("wishes");
+        wishesRef.push().setValue(newWish)
+                .addOnSuccessListener(aVoid -> {
+
+                    Toast.makeText(WishlistForm.this, "Wish submitted successfully", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(WishlistForm.this, Dashboard.class));
+                })
+                .addOnFailureListener(e -> {
+                    e.printStackTrace();
+
+                    Toast.makeText(WishlistForm.this, "Failed to submit wish", Toast.LENGTH_SHORT).show();
+                });
     }
 }
