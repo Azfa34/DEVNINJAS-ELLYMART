@@ -1,7 +1,10 @@
 package com.example.ellymartarkedcengal;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,15 +18,25 @@ import com.example.ellymartarkedcengal.R;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import java.io.IOException;
 
 public class NewItemPage extends AppCompatActivity {
 
-    private static final int PICK_PHOTO_REQUEST = 1;
+    private static final int PICK_IMAGE_REQUEST = 1;
     private DatabaseReference databaseReference;
 
     private ImageView imageViewItem;
-    private Button buttonPickPhoto, buttonSaveItem;
-    private EditText editTextItemName, editTextItemPrice, editTextItemDescription;
+    Button buttonPickPhotoNewItem, buttonSaveItem;
+    EditText editTextItemName, editTextItemPrice, editTextItemDescription;
+
+    private Uri selectedImageUri;
+
+    //Firebase Storage
+
+    FirebaseStorage storage;
+    StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,23 +45,52 @@ public class NewItemPage extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         databaseReference = FirebaseDatabase.getInstance().getReference();
         imageViewItem = findViewById(R.id.imageViewItem);
-        buttonPickPhoto = findViewById(R.id.buttonPickPhoto);
+        buttonPickPhotoNewItem = findViewById(R.id.buttonPickPhotoNewItem);
         buttonSaveItem = findViewById(R.id.buttonSaveItem);
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        //Initialize Firebase Storage
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
         editTextItemName = findViewById(R.id.editTextItemName);
         editTextItemPrice = findViewById(R.id.editTextItemPrice);
         editTextItemDescription = findViewById(R.id.editTextItemDescription);
-        buttonPickPhoto.setOnClickListener(new View.OnClickListener() {
+
+        buttonPickPhotoNewItem.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                imageViewItem.setImageResource(R.drawable.upload);
+            public void onClick(View v) {
+
+                openImagePicker();
             }
         });
         buttonSaveItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 saveNewItem();
             }
         });
+    }
+    private void openImagePicker(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_PICK);
+        startActivityForResult(Intent.createChooser(intent,"Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, @Nullable Intent data){
+        super.onActivityResult(requestCode,resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data!= null && data.getData() != null){
+            selectedImageUri = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
+                imageViewItem.setImageBitmap(bitmap);
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     private void saveNewItem() {

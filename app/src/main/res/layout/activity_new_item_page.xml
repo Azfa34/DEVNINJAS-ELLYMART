@@ -33,7 +33,7 @@
         tools:layout_editor_absoluteY="35dp" />
 
     <Button
-        android:id="@+id/buttonPickPhoto"
+        android:id="@+id/buttonPickPhotoNewItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/imageViewItem"
