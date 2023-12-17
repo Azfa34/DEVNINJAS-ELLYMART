@@ -14,7 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.ellymartarkedcengal.R;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -43,7 +42,6 @@ public class NewItemPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_item_page);
         FirebaseApp.initializeApp(this);
-        databaseReference = FirebaseDatabase.getInstance().getReference();
         imageViewItem = findViewById(R.id.imageViewItem);
         buttonPickPhotoNewItem = findViewById(R.id.buttonPickPhotoNewItem);
         buttonSaveItem = findViewById(R.id.buttonSaveItem);
