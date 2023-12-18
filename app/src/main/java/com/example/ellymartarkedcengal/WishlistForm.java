@@ -51,6 +51,9 @@ public class WishlistForm extends AppCompatActivity {
 
         WishItemNameEditText = findViewById(R.id.editTextWName);
         WishItemNameDescription = findViewById(R.id.editTextWDescription);
+
+
+
         btnPickPhotoWish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,24 +97,25 @@ public class WishlistForm extends AppCompatActivity {
         String itemDescription = WishItemNameDescription.getText().toString().trim();
 
         if (!itemName.isEmpty() && !itemDescription.isEmpty()) {
-            // Save the wishlist item name and description first
 
-            // Creating a new Wish object
             Wishlist wishlist = new Wishlist(itemName, itemDescription);
 
-            wishesRef.child(itemName).setValue(wishlist);
-                        // After successfully saving the name and description
-                        Toast.makeText(WishlistForm.this, "Successful", Toast.LENGTH_SHORT).show();
-                        // Proceed with any additional actions if needed
-                    }
-                   else{
-                        Toast.makeText(WishlistForm.this, "Failed to submit wishlist item", Toast.LENGTH_SHORT).show();
-                    }
+            DatabaseReference newProductRef = wishesRef.child("wishlist").push();
+            String wishProductId = newProductRef.getKey();
+            wishlist.setWishProductId(wishProductId);
+
+            wishesRef.child("wishlist").child(wishProductId).setValue(wishlist);
+            Toast.makeText(WishlistForm.this, "Successful", Toast.LENGTH_SHORT).show();
+
+        } else {
+            Toast.makeText(WishlistForm.this, "Failed to submit wishlist item", Toast.LENGTH_SHORT).show();
         }
+    }
 
 
 
-/* private void uploadImageToFirebaseStorage(String wishKey) {
+
+ /*private void uploadImageToFirebaseStorage(String wishKey) {
         StorageReference imageRef = storageReference.child("images/" + wishKey + ".jpg");
 
         imageView.setDrawingCacheEnabled(true);

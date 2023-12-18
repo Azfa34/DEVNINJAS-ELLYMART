@@ -1,16 +1,27 @@
 package com.example.ellymartarkedcengal;
 
 public class Wishlist {
+    private String wishProductId; // Added field
+
     private String itemName;
     private String itemDescription;
 
-    // Required empty constructor for Firebase
     public Wishlist() {
+        // Default constructor required for Firebase
     }
 
     public Wishlist(String itemName, String itemDescription) {
         this.itemName = itemName;
         this.itemDescription = itemDescription;
+    }
+
+    // Add the new field's getter and setter
+    public String getWishProductId() {
+        return wishProductId;
+    }
+
+    public void setWishProductId(String wishProductId) {
+        this.wishProductId = wishProductId;
     }
 
     public String getItemName() {
@@ -29,3 +40,4 @@ public class Wishlist {
         this.itemDescription = itemDescription;
     }
 }
+
