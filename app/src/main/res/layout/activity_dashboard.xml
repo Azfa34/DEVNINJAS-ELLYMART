@@ -9,6 +9,15 @@
     android:id="@+id/drawer_layout"
     tools:context=".Dashboard">
 
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="125dp"
+        android:layout_marginBottom="550dp"
+        android:layout_marginEnd="125dp" />
+
     <TextView
         android:id="@+id/adminInfoTextView"
         android:layout_width="match_parent"
@@ -18,7 +27,6 @@
         android:layout_marginTop="350dp"
         android:layout_marginEnd="90dp"
         android:text="Admin Info" />
-
     <Button
         android:id="@+id/btnEditAdminInfo"
         android:layout_width="match_parent"
@@ -40,6 +48,7 @@
         android:layout_marginBottom="100dp"
         android:layout_marginTop="550dp"
         android:layout_marginEnd="100dp"/>
+
 
 
     <com.google.android.material.navigation.NavigationView

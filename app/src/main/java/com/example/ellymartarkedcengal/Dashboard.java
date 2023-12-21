@@ -11,6 +11,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -18,13 +21,21 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.ellymartarkedcengal.EditAdminInfoActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Dashboard extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
     TextView adminInfoTextView;
-     Button btnEditAdminInfo;
+    Button btnEditAdminInfo;
+    DatabaseReference usersRef;
     private static final int EDIT_ADMIN_INFO_REQUEST = 1;
 
     @Override
@@ -48,12 +59,34 @@ public class Dashboard extends AppCompatActivity {
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        usersRef = FirebaseDatabase.getInstance().getReference().child("users");
         Intent intent = getIntent();
         boolean isAdminUser = intent.getBooleanExtra("isAdminUser", true);
 
         setNavigationViewHeader(isAdminUser);
         updateAdminInfoDisplay();
+
+        String[] items = {"Open", "On Break", "Closed"};
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner spinner = findViewById(R.id.spinner); // Make sure to change this to your actual Spinner ID
+        spinner.setAdapter(adapter);
+
+        // Step 7: Handle item selection (optional)
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView parentView, View selectedItemView, int position, long id) {
+                // Handle the item selection here
+                String selectedItem = items[position];
+                Toast.makeText(Dashboard.this, "Selected: " + selectedItem, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Do nothing here
+            }
+        });
         btnEditAdminInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,10 +178,35 @@ public class Dashboard extends AppCompatActivity {
     }
 
     private void updateAdminInfoDisplay() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        adminInfoTextView.setText("Admin Name: John Doe\nAdmin Email: john.doe@example.com");
+        if (user != null) {
+
+            String userId = user.getUid();
+
+            DatabaseReference userRef = usersRef.child(userId);
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String adminName = dataSnapshot.child("name").getValue(String.class);
+                        String adminEmail = user.getEmail();
+
+                        if (adminName != null) {
+                            adminInfoTextView.setText("Admin Name: " + adminName + "\nAdmin Email: " + adminEmail);
+                        } else {
+                            adminInfoTextView.setText("Admin Email: " + adminEmail);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // Handle errors
+                }
+            });
+        }
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -166,5 +224,3 @@ public class Dashboard extends AppCompatActivity {
         }
     }
 }
-
-

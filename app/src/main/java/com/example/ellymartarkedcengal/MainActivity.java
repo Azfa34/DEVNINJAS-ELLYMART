@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
             usersRef.child(userId).setValue(user);
 
 
+
             Toast.makeText(MainActivity.this, "Details saved successfully", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(MainActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
