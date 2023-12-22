@@ -55,7 +55,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         public void bind(Products product) {
             productNameTextView.setText(product.getName());
             productPriceTextView.setText(String.valueOf(product.getPrice()));
-            productAvailabilityTextView.setText(product.isAvailability() ? "Available" : "Out of stock");
+
         }
     }
 }

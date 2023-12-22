@@ -1,25 +1,22 @@
 package com.example.ellymartarkedcengal;
 
 public class Products {
-
         private String productId;
         private String name;
         private double price;
-        private boolean availability;
         private String description;
-        private int quantity;
+        private String imageUrl; // Added field for image URL
 
         // Constructors, getters, and setters
         public Products() {
-                // Default constructor needed for Firebase
+                // Default constructor required for Firebase
         }
 
-        public Products(String name, double price, String description) {
+        public Products(String name, double price, String description, String imageUrl) {
                 this.name = name;
                 this.price = price;
                 this.description = description;
-                this.availability = true; // Assuming the default availability is true
-                this.quantity = 0; // Assuming the default quantity is 0
+                this.imageUrl = imageUrl;
         }
 
         public String getName() {
@@ -38,14 +35,6 @@ public class Products {
                 this.price = price;
         }
 
-        public boolean isAvailability() {
-                return availability;
-        }
-
-        public void setAvailability(boolean availability) {
-                this.availability = availability;
-        }
-
         public String getDescription() {
                 return description;
         }
@@ -54,12 +43,12 @@ public class Products {
                 this.description = description;
         }
 
-        public int getQuantity() {
-                return quantity;
+        public String getImageUrl() {
+                return imageUrl;
         }
 
-        public void setQuantity(int quantity) {
-                this.quantity = quantity;
+        public void setImageUrl(String imageUrl) {
+                this.imageUrl = imageUrl;
         }
 
         public String getProductId() {
@@ -70,4 +59,5 @@ public class Products {
                 this.productId = productId;
         }
 }
+
 

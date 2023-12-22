@@ -101,7 +101,7 @@ public class NewItemPage extends AppCompatActivity {
 
         // Check if itemPrice is not empty before parsing
         if (!itemName.isEmpty()) {
-            Products newItem = new Products(itemName, itemPrice, itemDescription);
+            Products newItem = new Products(itemName, itemPrice, itemDescription,null);
 
             DatabaseReference newProductRef = databaseReference.child("products").push();
             String productId = newProductRef.getKey();
@@ -131,6 +131,8 @@ public class NewItemPage extends AppCompatActivity {
                                 String downloadUrl = uri.toString();
 
                                 // Update the product with the download URL
+                                newItem.setImageUrl(downloadUrl);
+
                                 DatabaseReference productToUpdateRef = FirebaseDatabase.getInstance().getReference().child("products").child(productId);
                                 productToUpdateRef.child("imageUrl").setValue(downloadUrl)
                                         .addOnSuccessListener(aVoid1 -> {
@@ -156,4 +158,5 @@ public class NewItemPage extends AppCompatActivity {
             Toast.makeText(NewItemPage.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
         }
     }
+
 }
