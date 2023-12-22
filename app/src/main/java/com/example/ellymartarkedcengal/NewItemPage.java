@@ -107,55 +107,50 @@ public class NewItemPage extends AppCompatActivity {
             String productId = newProductRef.getKey();
             newItem.setProductId(productId);
 
-            newProductRef.setValue(newItem)
-                    .addOnSuccessListener(aVoid -> {
-                        // Successfully saved item details, now upload the image
-                        StorageReference imageRef = storageReference.child("product_images/" + productId + ".jpg");
+            // Replace this with the actual ImageView for the product image
+            // Make sure you have a reference to the ImageView in your layout
+            ImageView imageView = findViewById(R.id.imageView);
 
-                        // Replace this with the actual ImageView for the product image
-                        // Make sure you have a reference to the ImageView in your layout
-                        ImageView imageView = findViewById(R.id.imageView);
+            imageView.setDrawingCacheEnabled(true);
+            imageView.buildDrawingCache();
+            Bitmap bitmap = imageView.getDrawingCache();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
 
-                        imageView.setDrawingCacheEnabled(true);
-                        imageView.buildDrawingCache();
-                        Bitmap bitmap = imageView.getDrawingCache();
-                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                        byte[] data = baos.toByteArray();
+            // Upload image to Firebase Storage
+            StorageReference imageRef = storageReference.child("product_images/" + productId + ".jpg");
+            UploadTask uploadTask = imageRef.putBytes(data);
 
-                        // Upload image to Firebase Storage
-                        UploadTask uploadTask = imageRef.putBytes(data);
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                // Image uploaded successfully, get the download URL
+                imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    String downloadUrl = uri.toString();
 
-                        uploadTask.addOnSuccessListener(taskSnapshot -> {
-                            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                                String downloadUrl = uri.toString();
+                    // Update the product with the download URL
+                    newItem.setImageUrl(downloadUrl); // Set the image URL in the Products object
 
-                                // Update the product with the download URL
-                                DatabaseReference productToUpdateRef = FirebaseDatabase.getInstance().getReference().child("products").child(productId);
-                                productToUpdateRef.child("imageUrl").setValue(downloadUrl)
-                                        .addOnSuccessListener(aVoid1 -> {
-                                            Toast.makeText(NewItemPage.this, "Item saved successfully", Toast.LENGTH_SHORT).show();
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            e.printStackTrace();
-                                            Toast.makeText(NewItemPage.this, "Failed to update item with download URL", Toast.LENGTH_SHORT).show();
-                                        });
-                            }).addOnFailureListener(e -> {
+                    newProductRef.setValue(newItem)
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(NewItemPage.this, "Item saved successfully", Toast.LENGTH_SHORT).show();
+                            })
+                            .addOnFailureListener(e -> {
                                 e.printStackTrace();
+                                Toast.makeText(NewItemPage.this, "Failed to update item with download URL", Toast.LENGTH_SHORT).show();
                             });
-                        }).addOnFailureListener(e -> {
-                            e.printStackTrace();
-                            // Handle failure to upload image
-                            Toast.makeText(NewItemPage.this, "Failed to upload item image", Toast.LENGTH_SHORT).show();
-                        });
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(NewItemPage.this, "Error saving item: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
+                }).addOnFailureListener(e -> {
+                    e.printStackTrace();
+                });
+            }).addOnFailureListener(e -> {
+                e.printStackTrace();
+                // Handle failure to upload image
+                Toast.makeText(NewItemPage.this, "Failed to upload item image", Toast.LENGTH_SHORT).show();
+            });
         } else {
             Toast.makeText(NewItemPage.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
         }
     }
+
 
 
 }
