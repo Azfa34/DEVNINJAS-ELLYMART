@@ -15,6 +15,9 @@
         android:theme="@style/Theme.ELLYMARTARKEDCENGAL"
         tools:targetApi="31">
         <activity
+            android:name=".WishlistCatalogActivity"
+            android:exported="false" />
+        <activity
             android:name=".ActivityReport"
             android:exported="false" />
         <activity
@@ -32,9 +35,7 @@
         <activity
             android:name=".ProductCatalogActivity"
             android:exported="false" />
-        <activity
-            android:name=".ShopItems"
-            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />

@@ -2,36 +2,27 @@ package com.example.ellymartarkedcengal;
 
 import android.content.Intent;
 import android.view.View;
-import android.view.LayoutInflater;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.ellymartarkedcengal.ProductAdapter; // Change "yourpackage" to the actual package where ProductAdapter is located
-import com.example.ellymartarkedcengal.Products; // Change "yourpackage" to the actual package where Products is located
 
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.EditText;
 
-import android.content.DialogInterface;
-
-import com.example.ellymartarkedcengal.EditAdminInfoActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -51,9 +42,12 @@ public class Dashboard extends AppCompatActivity {
     TextView adminInfoTextView;
     Button btnEditAdminInfo;
     DatabaseReference usersRef;
-    RecyclerView recyclerView;
+    RecyclerView productRecyclerView;
+    RecyclerView wishlistRecyclerView;
     private ProductAdapter productAdapter;
+    private WishlistAdapter wishlistAdapter;
     private List<Products> productList;
+    private List<Wishlist> wishlist;
     private static final int EDIT_ADMIN_INFO_REQUEST = 1;
 
     @Override
@@ -87,12 +81,17 @@ public class Dashboard extends AppCompatActivity {
         Intent intent = getIntent();
         boolean isAdminUser = intent.getBooleanExtra("isAdminUser", true);
 
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false));
-
+        productRecyclerView = findViewById(R.id.recyclerView);
+        productRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false));
         productList = new ArrayList<>();
         productAdapter = new ProductAdapter(productList);
-        recyclerView.setAdapter(productAdapter);
+        productRecyclerView.setAdapter(productAdapter);
+
+        wishlist = new ArrayList<>();
+        wishlistRecyclerView = findViewById(R.id.wishlistRecyclerView);
+        wishlistRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        wishlistAdapter = new WishlistAdapter(wishlist);
+        wishlistRecyclerView.setAdapter(wishlistAdapter);
 
         setNavigationViewHeader(isAdminUser);
         updateAdminInfoDisplay();
@@ -165,6 +164,11 @@ public class Dashboard extends AppCompatActivity {
                     startActivity(intent);
                     Toast.makeText(Dashboard.this, "Wishlist Selected", Toast.LENGTH_SHORT).show();
 
+                } else if (itemId == R.id.wishlistList) {
+                    Intent intent = new Intent(Dashboard.this, WishlistCatalogActivity.class);
+                    startActivity(intent);
+                    Toast.makeText(Dashboard.this, "Wishlist List Selected", Toast.LENGTH_SHORT).show();
+
                 } else if (itemId == R.id.activity) {
                     Intent intent = new Intent(Dashboard.this, ActivityReport.class);
                     startActivity(intent);
@@ -220,7 +224,29 @@ public class Dashboard extends AppCompatActivity {
                 // Handle errors
             }
         });
+        // Fetch wishlist from Firebase
+        DatabaseReference wishlistRef = FirebaseDatabase.getInstance().getReference().child("wishlist");
+        wishlistRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                wishlist.clear();  // Clear the existing wishlist
+                for (DataSnapshot wishlistSnapshot : dataSnapshot.getChildren()) {
+                    Wishlist wishlistItem = wishlistSnapshot.getValue(Wishlist.class);
+                    if (wishlistItem != null) {
+                        wishlist.add(wishlistItem);
+                    }
+                }
+                wishlistAdapter.notifyDataSetChanged();  // Update the wishlist adapter
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle errors
+            }
+        });
     }
+
+
 
     private void setNavigationViewHeader(boolean isAdminUser) {
         View headerLayout = navigationView.getHeaderView(0);
