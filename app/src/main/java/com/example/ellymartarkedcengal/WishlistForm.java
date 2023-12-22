@@ -98,7 +98,7 @@ public class WishlistForm extends AppCompatActivity {
 
         if (!itemName.isEmpty() && !itemDescription.isEmpty()) {
 
-            Wishlist wishlist = new Wishlist(itemName, itemDescription);
+            Wishlist wishlist = new Wishlist(itemName, itemDescription, null);
 
             DatabaseReference newProductRef = wishesRef.child("wishlist").push();
             String wishProductId = newProductRef.getKey();
@@ -124,8 +124,10 @@ public class WishlistForm extends AppCompatActivity {
                         String downloadUrl = uri.toString();
 
                         // Update the wish with the download URL
+                        wishlist.setImageUrl(downloadUrl);
                         DatabaseReference wishToUpdateRef = FirebaseDatabase.getInstance().getReference().child("wishes").child(wishProductId);
                         wishToUpdateRef.child("imageUrl").setValue(downloadUrl)
+
                                 .addOnSuccessListener(aVoid1 -> {
                                     Toast.makeText(WishlistForm.this, "Wish submitted successfully", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(WishlistForm.this, Dashboard.class));
