@@ -9,6 +9,10 @@
             android:icon="@drawable/baseline_wishlist_add_24"
             android:title="Wishlist"
             />
+        <item android:id="@+id/notificationReport"
+            android:icon="@drawable/baseline_wishlist_add_24"
+            android:title="Notification"
+            />
         <item android:id="@+id/activity"
             android:icon="@drawable/baseline_activity_outlined_24"
             android:title="Activity"

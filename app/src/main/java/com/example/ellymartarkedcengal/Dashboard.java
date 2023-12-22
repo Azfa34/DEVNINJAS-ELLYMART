@@ -2,23 +2,29 @@ package com.example.ellymartarkedcengal;
 
 import android.content.Intent;
 import android.view.View;
+import android.view.LayoutInflater;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.AlertDialog;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.EditText;
+
+import android.content.DialogInterface;
 
 import com.example.ellymartarkedcengal.EditAdminInfoActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +34,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 
 public class Dashboard extends AppCompatActivity {
     DrawerLayout drawerLayout;
@@ -46,10 +53,16 @@ public class Dashboard extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void openNotificationActivity(View view) {
+        Intent intent = new Intent(this, NotificationActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
 
         adminInfoTextView = findViewById(R.id.adminInfoTextView);
         btnEditAdminInfo = findViewById(R.id.btnEditAdminInfo);
@@ -81,7 +94,6 @@ public class Dashboard extends AppCompatActivity {
                 String selectedItem = items[position];
                 Toast.makeText(Dashboard.this, "Selected: " + selectedItem, Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
                 // Do nothing here
@@ -95,6 +107,20 @@ public class Dashboard extends AppCompatActivity {
         });
 
         Button btnExitEditing = findViewById(R.id.btnExitEditing);
+
+        Button btnNotification = findViewById(R.id.btnNotifications);
+        if (isAdminUser) {
+            btnNotification.setVisibility(View.VISIBLE);
+            btnNotification.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openNotificationActivity(v);
+                }
+            });
+        } else {
+            btnNotification.setVisibility(View.GONE);
+        }
+
         btnExitEditing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,6 +128,8 @@ public class Dashboard extends AppCompatActivity {
                 btnEditAdminInfo.setEnabled(true);
             }
         });
+
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -132,6 +160,14 @@ public class Dashboard extends AppCompatActivity {
                     startActivity(intent);
                     Toast.makeText(Dashboard.this, "Product List Selected", Toast.LENGTH_SHORT).show();
 
+                } else if (itemId == R.id.notification) {
+                    Intent intent = new Intent(Dashboard.this, NotificationActivity.class);
+                    startActivity(intent);
+                    Toast.makeText(Dashboard.this, "Notification Selected", Toast.LENGTH_SHORT).show();
+                } else if (itemId == R.id.productlist) {
+                    Intent intent = new Intent(Dashboard.this, ProductCatalogActivity.class);
+                    startActivity(intent);
+                    Toast.makeText(Dashboard.this, "Product List Selected", Toast.LENGTH_SHORT).show();
                 } else if (itemId == R.id.profile) {
                     Intent intent = new Intent(Dashboard.this, MainActivity.class);
                     startActivity(intent);
@@ -142,7 +178,6 @@ public class Dashboard extends AppCompatActivity {
             }
         });
     }
-
 
     private void setNavigationViewHeader(boolean isAdminUser) {
         View headerLayout = navigationView.getHeaderView(0);
@@ -161,7 +196,6 @@ public class Dashboard extends AppCompatActivity {
             navigationView.inflateMenu(R.menu.cust_menu);
         }
     }
-
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
