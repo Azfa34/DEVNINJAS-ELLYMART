@@ -8,23 +8,18 @@ public class Products {
         private boolean availability;
         private String description;
         private int quantity;
-        private String imageUrl;  // New field for image URL
 
         // Constructors, getters, and setters
-        public Products(String productId, double itemPrice, String itemDescription) {
-                this.productId = productId;
-                this.price = itemPrice;
-                this.description = itemDescription;
-                this.imageUrl = imageUrl;
+        public Products() {
+                // Default constructor needed for Firebase
         }
 
-        public Products(String name, double price, boolean availability, String description, int quantity, String imageUrl) {
+        public Products(String name, double price, String description) {
                 this.name = name;
                 this.price = price;
-                this.availability = availability;
                 this.description = description;
-                this.quantity = quantity;
-                this.imageUrl = imageUrl;
+                this.availability = true; // Assuming the default availability is true
+                this.quantity = 0; // Assuming the default quantity is 0
         }
 
         public String getName() {
@@ -74,15 +69,5 @@ public class Products {
         public void setProductId(String productId) {
                 this.productId = productId;
         }
-
-        public String getImageUrl() {
-                return imageUrl;
-        }
-
-        public void setImageUrl(String imageUrl) {
-                this.imageUrl = imageUrl;
-        }
 }
-
-
 
