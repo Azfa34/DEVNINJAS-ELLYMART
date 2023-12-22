@@ -10,6 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.ellymartarkedcengal.ProductAdapter; // Change "yourpackage" to the actual package where ProductAdapter is located
+import com.example.ellymartarkedcengal.Products; // Change "yourpackage" to the actual package where Products is located
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -35,6 +40,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Dashboard extends AppCompatActivity {
     DrawerLayout drawerLayout;
@@ -43,6 +51,9 @@ public class Dashboard extends AppCompatActivity {
     TextView adminInfoTextView;
     Button btnEditAdminInfo;
     DatabaseReference usersRef;
+    RecyclerView recyclerView;
+    private ProductAdapter productAdapter;
+    private List<Products> productList;
     private static final int EDIT_ADMIN_INFO_REQUEST = 1;
 
     @Override
@@ -76,8 +87,16 @@ public class Dashboard extends AppCompatActivity {
         Intent intent = getIntent();
         boolean isAdminUser = intent.getBooleanExtra("isAdminUser", true);
 
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false));
+
+        productList = new ArrayList<>();
+        productAdapter = new ProductAdapter(productList);
+        recyclerView.setAdapter(productAdapter);
+
         setNavigationViewHeader(isAdminUser);
         updateAdminInfoDisplay();
+        fetchProductsFromDatabase();
 
         String[] items = {"Open", "On Break", "Closed"};
 
@@ -87,6 +106,7 @@ public class Dashboard extends AppCompatActivity {
         spinner.setAdapter(adapter);
 
         // Step 7: Handle item selection (optional)
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView parentView, View selectedItemView, int position, long id) {
@@ -175,6 +195,29 @@ public class Dashboard extends AppCompatActivity {
                 }
 
                 return false;
+            }
+        });
+    }
+
+    private void fetchProductsFromDatabase() {
+        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("products");
+
+        productsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                productList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Products product = snapshot.getValue(Products.class);
+                    if (product != null) {
+                        productList.add(product);
+                    }
+                }
+                productAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle errors
             }
         });
     }

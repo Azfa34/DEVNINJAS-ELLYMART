@@ -32,8 +32,9 @@ public class ProductCatalogActivity extends AppCompatActivity {
 
 
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        productAdapter = new ProductAdapter(productList, this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false));
+
+        productAdapter = new ProductAdapter(productList);
         recyclerView.setAdapter(productAdapter);
 
         // Initialize Firebase
@@ -44,8 +45,9 @@ public class ProductCatalogActivity extends AppCompatActivity {
     }
 
     private void fetchDataFromFirebase() {
-        // Add a ValueEventListener to fetch data
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("products");
+
+        productsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 productList.clear(); // Clear existing data
@@ -68,5 +70,4 @@ public class ProductCatalogActivity extends AppCompatActivity {
             }
         });
     }
-
 }
