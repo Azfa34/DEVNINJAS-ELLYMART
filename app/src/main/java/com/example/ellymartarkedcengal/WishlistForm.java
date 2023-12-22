@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class WishlistForm extends AppCompatActivity {
+
     private static final int PICK_IMAGE_REQUEST = 1;
     DatabaseReference wishesRef;
     private ImageView imageView;
@@ -32,8 +33,8 @@ public class WishlistForm extends AppCompatActivity {
     private Uri selectedImageUri;
 
     // Firebase Storage
-     FirebaseStorage storage;
-     StorageReference storageReference;
+    FirebaseStorage storage;
+    StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,23 +49,19 @@ public class WishlistForm extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-
         WishItemNameEditText = findViewById(R.id.editTextWName);
         WishItemNameDescription = findViewById(R.id.editTextWDescription);
-
-
 
         btnPickPhotoWish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 openImagePicker();
             }
         });
+
         btnMakeWish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 saveWishlistToFirebase();
             }
         });
@@ -97,53 +94,51 @@ public class WishlistForm extends AppCompatActivity {
         String itemDescription = WishItemNameDescription.getText().toString().trim();
 
         if (!itemName.isEmpty() && !itemDescription.isEmpty()) {
-
             Wishlist wishlist = new Wishlist(itemName, itemDescription, null);
 
             DatabaseReference newProductRef = wishesRef.child("wishlist").push();
             String wishProductId = newProductRef.getKey();
             wishlist.setWishProductId(wishProductId);
 
-            wishesRef.child("wishlist").child(wishProductId).setValue(wishlist)
-                .addOnSuccessListener(aVoid -> {
-                // Successfully saved wishlist details, now upload the image
-                StorageReference imageRef = storageReference.child("images/" + wishProductId + ".jpg");
+            newProductRef.setValue(wishlist)
+                    .addOnSuccessListener(aVoid -> {
+                        // Successfully saved wishlist details, now upload the image
+                        StorageReference imageRef = storageReference.child("images/" + wishProductId + ".jpg");
 
-                imageView.setDrawingCacheEnabled(true);
-                imageView.buildDrawingCache();
-                Bitmap bitmap = imageView.getDrawingCache();
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] data = baos.toByteArray();
+                        imageView.setDrawingCacheEnabled(true);
+                        imageView.buildDrawingCache();
+                        Bitmap bitmap = imageView.getDrawingCache();
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                        byte[] data = baos.toByteArray();
 
-                // Upload image to Firebase Storage
-                UploadTask uploadTask = imageRef.putBytes(data);
+                        // Upload image to Firebase Storage
+                        UploadTask uploadTask = imageRef.putBytes(data);
 
-                uploadTask.addOnSuccessListener(taskSnapshot -> {
-                    imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        String downloadUrl = uri.toString();
+                        uploadTask.addOnSuccessListener(taskSnapshot -> {
+                            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                                String downloadUrl = uri.toString();
 
-                        // Update the wish with the download URL
-                        wishlist.setImageUrl(downloadUrl);
-                        DatabaseReference wishToUpdateRef = FirebaseDatabase.getInstance().getReference().child("wishes").child(wishProductId);
-                        wishToUpdateRef.child("imageUrl").setValue(downloadUrl)
-
-                                .addOnSuccessListener(aVoid1 -> {
-                                    Toast.makeText(WishlistForm.this, "Wish submitted successfully", Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(WishlistForm.this, Dashboard.class));
-                                })
-                                .addOnFailureListener(e -> {
-                                    e.printStackTrace();
-                                    Toast.makeText(WishlistForm.this, "Failed to update wish with download URL", Toast.LENGTH_SHORT).show();
-                                });
-                    }).addOnFailureListener(e -> {
-                        e.printStackTrace();
-                    });
-                }).addOnFailureListener(e -> {
-                    e.printStackTrace();
-                    // Handle failure to upload image
-                });
-            })
+                                // Update the wish with the download URL
+                                wishlist.setImageUrl(downloadUrl);
+                                wishesRef.child("wishlist").child(wishProductId).child("imageUrl").setValue(downloadUrl)
+                                        .addOnSuccessListener(aVoid1 -> {
+                                            Toast.makeText(WishlistForm.this, "Wish submitted successfully", Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(WishlistForm.this, Dashboard.class));
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            e.printStackTrace();
+                                            Toast.makeText(WishlistForm.this, "Failed to update wish with download URL", Toast.LENGTH_SHORT).show();
+                                        });
+                            }).addOnFailureListener(e -> {
+                                e.printStackTrace();
+                            });
+                        }).addOnFailureListener(e -> {
+                            e.printStackTrace();
+                            // Handle failure to upload image
+                            Toast.makeText(WishlistForm.this, "Failed to upload wish image", Toast.LENGTH_SHORT).show();
+                        });
+                    })
                     .addOnFailureListener(e -> {
                         Toast.makeText(WishlistForm.this, "Failed to submit wishlist item", Toast.LENGTH_SHORT).show();
                     });
@@ -151,5 +146,5 @@ public class WishlistForm extends AppCompatActivity {
             Toast.makeText(WishlistForm.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
         }
     }
-
 }
+
