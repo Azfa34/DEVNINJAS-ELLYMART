@@ -156,6 +156,4 @@ public class NewItemPage extends AppCompatActivity {
             Toast.makeText(NewItemPage.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
         }
     }
-
-
 }
