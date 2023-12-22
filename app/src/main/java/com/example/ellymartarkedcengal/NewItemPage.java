@@ -72,27 +72,28 @@ public class NewItemPage extends AppCompatActivity {
             }
         });
     }
-    private void openImagePicker(){
+    private void openImagePicker() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_PICK);
-        startActivityForResult(Intent.createChooser(intent,"Select Picture"), PICK_IMAGE_REQUEST);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
 
     @Override
-    protected void onActivityResult (int requestCode, int resultCode, @Nullable Intent data){
-        super.onActivityResult(requestCode,resultCode, data);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data!= null && data.getData() != null){
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             selectedImageUri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
                 imageViewItem.setImageBitmap(bitmap);
-            } catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
+
 
     private void saveNewItem() {
         String itemName = editTextItemName.getText().toString();
@@ -101,7 +102,7 @@ public class NewItemPage extends AppCompatActivity {
 
         // Check if itemPrice is not empty before parsing
         if (!itemName.isEmpty()) {
-            Products newItem = new Products(itemName, itemPrice, itemDescription,null);
+            Products newItem = new Products(itemName, itemPrice, itemDescription, null);
 
             DatabaseReference newProductRef = databaseReference.child("products").push();
             String productId = newProductRef.getKey();
@@ -114,42 +115,52 @@ public class NewItemPage extends AppCompatActivity {
 
                         // Replace this with the actual ImageView for the product image
                         // Make sure you have a reference to the ImageView in your layout
-                        ImageView imageView = findViewById(R.id.imageView);
+                        ImageView imageView = findViewById(R.id.imageViewItem); // Update to the correct ID
 
-                        imageView.setDrawingCacheEnabled(true);
-                        imageView.buildDrawingCache();
-                        Bitmap bitmap = imageView.getDrawingCache();
-                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                        byte[] data = baos.toByteArray();
+                        if (imageView != null && imageView.getDrawable() != null) {
+                            imageView.setDrawingCacheEnabled(true);
+                            imageView.buildDrawingCache();
+                            Bitmap bitmap = imageView.getDrawingCache();
 
-                        // Upload image to Firebase Storage
-                        UploadTask uploadTask = imageRef.putBytes(data);
+                            if (bitmap != null) {
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                                byte[] data = baos.toByteArray();
 
-                        uploadTask.addOnSuccessListener(taskSnapshot -> {
-                            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                                String downloadUrl = uri.toString();
+                                // Upload image to Firebase Storage
+                                UploadTask uploadTask = imageRef.putBytes(data);
 
-                                // Update the product with the download URL
-                                newItem.setImageUrl(downloadUrl);
+                                uploadTask.addOnSuccessListener(taskSnapshot -> {
+                                    // Image uploaded successfully, get the download URL
+                                    imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                                        String downloadUrl = uri.toString();
 
-                                DatabaseReference productToUpdateRef = FirebaseDatabase.getInstance().getReference().child("products").child(productId);
-                                productToUpdateRef.child("imageUrl").setValue(downloadUrl)
-                                        .addOnSuccessListener(aVoid1 -> {
-                                            Toast.makeText(NewItemPage.this, "Item saved successfully", Toast.LENGTH_SHORT).show();
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            e.printStackTrace();
-                                            Toast.makeText(NewItemPage.this, "Failed to update item with download URL", Toast.LENGTH_SHORT).show();
-                                        });
-                            }).addOnFailureListener(e -> {
-                                e.printStackTrace();
-                            });
-                        }).addOnFailureListener(e -> {
-                            e.printStackTrace();
-                            // Handle failure to upload image
-                            Toast.makeText(NewItemPage.this, "Failed to upload item image", Toast.LENGTH_SHORT).show();
-                        });
+                                        // Update the product with the download URL
+                                        DatabaseReference productToUpdateRef = FirebaseDatabase.getInstance().getReference().child("products").child(productId);
+                                        productToUpdateRef.child("imageUrl").setValue(downloadUrl)
+                                                .addOnSuccessListener(aVoid1 -> {
+                                                    newItem.setImageUrl(downloadUrl);
+                                                    Toast.makeText(NewItemPage.this, "Item saved successfully", Toast.LENGTH_SHORT).show();
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    e.printStackTrace();
+                                                    Toast.makeText(NewItemPage.this, "Failed to update item with download URL", Toast.LENGTH_SHORT).show();
+                                                });
+                                    }).addOnFailureListener(e -> {
+                                        e.printStackTrace();
+                                    });
+                                }).addOnFailureListener(e -> {
+                                    e.printStackTrace();
+                                    // Handle failure to upload image
+                                    Toast.makeText(NewItemPage.this, "Failed to upload item image"+ e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });
+
+                            } else {
+                                Toast.makeText(NewItemPage.this, "Bitmap is null", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(NewItemPage.this, "ImageView or Drawable is null", Toast.LENGTH_SHORT).show();
+                        }
                     })
                     .addOnFailureListener(e -> {
                         Toast.makeText(NewItemPage.this, "Error saving item: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -158,5 +169,4 @@ public class NewItemPage extends AppCompatActivity {
             Toast.makeText(NewItemPage.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
         }
     }
-
 }
