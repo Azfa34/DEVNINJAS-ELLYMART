@@ -19,6 +19,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class NewItemPage extends AppCompatActivity {
@@ -92,24 +95,59 @@ public class NewItemPage extends AppCompatActivity {
     }
 
     private void saveNewItem() {
-
         String itemName = editTextItemName.getText().toString();
         double itemPrice = Double.parseDouble(editTextItemPrice.getText().toString());
         String itemDescription = editTextItemDescription.getText().toString();
 
         // Check if itemPrice is not empty before parsing
         if (!itemName.isEmpty()) {
-
-            // Use the productId as the key for the product
             Products newItem = new Products(itemName, itemPrice, itemDescription);
+
             DatabaseReference newProductRef = databaseReference.child("products").push();
             String productId = newProductRef.getKey();
             newItem.setProductId(productId);
 
-            // Save the new item to the "products" node with the generated productId
             newProductRef.setValue(newItem)
                     .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(NewItemPage.this, "Item saved successfully", Toast.LENGTH_SHORT).show();
+                        // Successfully saved item details, now upload the image
+                        StorageReference imageRef = storageReference.child("product_images/" + productId + ".jpg");
+
+                        // Replace this with the actual ImageView for the product image
+                        // Make sure you have a reference to the ImageView in your layout
+                        ImageView imageView = findViewById(R.id.imageView);
+
+                        imageView.setDrawingCacheEnabled(true);
+                        imageView.buildDrawingCache();
+                        Bitmap bitmap = imageView.getDrawingCache();
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                        byte[] data = baos.toByteArray();
+
+                        // Upload image to Firebase Storage
+                        UploadTask uploadTask = imageRef.putBytes(data);
+
+                        uploadTask.addOnSuccessListener(taskSnapshot -> {
+                            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                                String downloadUrl = uri.toString();
+
+                                // Update the product with the download URL
+                                DatabaseReference productToUpdateRef = FirebaseDatabase.getInstance().getReference().child("products").child(productId);
+                                productToUpdateRef.child("imageUrl").setValue(downloadUrl)
+                                        .addOnSuccessListener(aVoid1 -> {
+                                            Toast.makeText(NewItemPage.this, "Item saved successfully", Toast.LENGTH_SHORT).show();
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            e.printStackTrace();
+                                            Toast.makeText(NewItemPage.this, "Failed to update item with download URL", Toast.LENGTH_SHORT).show();
+                                        });
+                            }).addOnFailureListener(e -> {
+                                e.printStackTrace();
+                            });
+                        }).addOnFailureListener(e -> {
+                            e.printStackTrace();
+                            // Handle failure to upload image
+                            Toast.makeText(NewItemPage.this, "Failed to upload item image", Toast.LENGTH_SHORT).show();
+                        });
                     })
                     .addOnFailureListener(e -> {
                         Toast.makeText(NewItemPage.this, "Error saving item: " + e.getMessage(), Toast.LENGTH_SHORT).show();

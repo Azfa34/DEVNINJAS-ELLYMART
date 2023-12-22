@@ -10,17 +10,17 @@ public class Products {
         private int quantity;
 
         // Constructors, getters, and setters
-        public Products(String productId, double itemPrice, String itemDescription){
-
+        public Products() {
+                // Default constructor needed for Firebase
         }
-        public Products(String name, double price, boolean availability, String description, int quantity) {
+
+        public Products(String name, double price, String description) {
                 this.name = name;
                 this.price = price;
-                this.availability = availability;
                 this.description = description;
-                this.quantity = quantity;
+                this.availability = true; // Assuming the default availability is true
+                this.quantity = 0; // Assuming the default quantity is 0
         }
-
 
         public String getName() {
                 return name;
@@ -70,4 +70,5 @@ public class Products {
                 this.productId = productId;
         }
 }
+
 

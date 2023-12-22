@@ -29,8 +29,7 @@ public class ProductCatalogActivity extends AppCompatActivity {
 
         // Initialize your product list (you might fetch it from Firebase)
         productList = new ArrayList<>();
-        productList.add(new Products("Product 1", 10.99, true, "Description 1", 100));
-        productList.add(new Products("Product 2", 20.99, false, "Description 2", 50));
+
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
