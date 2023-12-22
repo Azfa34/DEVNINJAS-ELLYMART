@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:id="@+id/drawer_layout"
     tools:context=".Dashboard">
 
@@ -18,37 +17,74 @@
         android:layout_marginBottom="550dp"
         android:layout_marginEnd="125dp" />
 
-    <TextView
-        android:id="@+id/adminInfoTextView"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginStart="90dp"
-        android:layout_marginBottom="250dp"
-        android:layout_marginTop="350dp"
-        android:layout_marginEnd="90dp"
-        android:text="Admin Info" />
-    <Button
-        android:id="@+id/btnEditAdminInfo"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="500dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="150dp"
-        android:text="Edit" />
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name:"/>
 
-    <Button
-        android:id="@+id/btnExitEditing"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Exit Editing"
+        <TextView
+            android:id="@+id/adminInfoTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="John Doe"/>
 
-        android:layout_marginStart="100dp"
-        android:layout_marginBottom="100dp"
-        android:layout_marginTop="550dp"
-        android:layout_marginEnd="100dp"/>
+        <TextView
+            android:id="@+id/textViewEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email:"/>
 
+        <TextView
+            android:id="@+id/adminEmailTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="john.doe@example.com"/>
+
+        <TextView
+            android:id="@+id/textViewTelNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TEL number:"/>
+
+        <TextView
+            android:id="@+id/adminTelNumberTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="1234567890"/>
+        <Button
+            android:id="@+id/btnEditAdminInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:onClick="openEditAdminInfoActivity"/>
+
+        <Button
+            android:id="@+id/btnExitEditing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Exit Editing"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/btnNotifications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Notifications"
+            android:onClick="openNotificationActivity"
+            android:layout_marginTop="16dp"/>
+
+    </LinearLayout>
 
 
     <com.google.android.material.navigation.NavigationView
@@ -57,8 +93,6 @@
         app:headerLayout="@layout/admin_header"
         app:menu="@menu/admin_menu"
         android:id="@+id/nav_view"
-
         android:layout_gravity="start"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
-
