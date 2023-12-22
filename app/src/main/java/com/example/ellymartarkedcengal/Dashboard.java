@@ -84,7 +84,7 @@ public class Dashboard extends AppCompatActivity {
         productRecyclerView = findViewById(R.id.recyclerView);
         productRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false));
         productList = new ArrayList<>();
-        productAdapter = new ProductAdapter(productList);
+        productAdapter = new ProductAdapter(this, productList);
         productRecyclerView.setAdapter(productAdapter);
 
         wishlist = new ArrayList<>();
