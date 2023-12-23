@@ -30,7 +30,8 @@ public class WishlistCatalogActivity extends AppCompatActivity {
         wishlistList = new ArrayList<>();
         wishlistRecyclerView = findViewById(R.id.wishlistRecyclerView);
         wishlistRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        wishlistAdapter = new WishlistAdapter(wishlistList);
+
+        wishlistAdapter = new WishlistAdapter(this,wishlistList);
         wishlistRecyclerView.setAdapter(wishlistAdapter);
 
         // Fetch data from Firebase

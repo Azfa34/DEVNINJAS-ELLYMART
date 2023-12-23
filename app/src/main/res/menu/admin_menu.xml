@@ -19,7 +19,7 @@
             />
         <item android:id="@+id/additem"
             android:icon="@drawable/baseline_additem_box_24"
-            android:title="Add New Item"
+            android:title="Add New Product"
             />
         <item android:id="@+id/productlist"
             android:icon="@drawable/baseline_product_list_24"

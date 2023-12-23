@@ -90,7 +90,7 @@ public class Dashboard extends AppCompatActivity {
         wishlist = new ArrayList<>();
         wishlistRecyclerView = findViewById(R.id.wishlistRecyclerView);
         wishlistRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        wishlistAdapter = new WishlistAdapter(wishlist);
+        wishlistAdapter = new WishlistAdapter(this,wishlist);
         wishlistRecyclerView.setAdapter(wishlistAdapter);
 
         setNavigationViewHeader(isAdminUser);
