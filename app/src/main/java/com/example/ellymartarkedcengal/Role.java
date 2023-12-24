@@ -19,19 +19,21 @@ public class Role extends AppCompatActivity {
         adminButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 navigateToAdminRegistration();
             }
         });
         customerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 navigateToDashboard();
             }
         });
     }
     private void navigateToAdminRegistration(){
-        Intent adminRegistrationIntent = new Intent(this, Dashboard.class);
-        startActivity(adminRegistrationIntent);
+        Intent AdminLoginIntent = new Intent(this, AdminLogin.class);
+        startActivity(AdminLoginIntent);
     }
     private void navigateToDashboard(){
         Intent dashboardIntent = new Intent(this,Dashboard.class);

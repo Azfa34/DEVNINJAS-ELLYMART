@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         button = findViewById(R.id.logout);
         textview = findViewById(R.id.user_details);
         user = auth.getCurrentUser();
-        Button btnShowProducts = findViewById(R.id.btnShowProducts);
+
 
 
         if (user == null) {
@@ -90,14 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 // Do nothing here
             }
             });
-        btnShowProducts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // When the button is clicked, open the ProductCatalogActivity
-                Intent intent = new Intent(MainActivity.this, ProductCatalogActivity.class);
-                startActivity(intent);
-            }
-        });
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

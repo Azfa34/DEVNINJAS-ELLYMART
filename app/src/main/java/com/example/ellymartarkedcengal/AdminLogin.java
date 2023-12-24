@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class AdminLogin extends AppCompatActivity {
 
     private EditText adminEmailEditText, adminPasswordEditText;
-    private Button loginButton,forgotPassButton;
+    private Button loginButton,forgotPassButton,signUpButton;
     FirebaseAuth mAuth;
 
     @Override
@@ -42,6 +42,7 @@ public class AdminLogin extends AppCompatActivity {
         adminPasswordEditText = findViewById(R.id.etAdminPassword);
         loginButton = findViewById(R.id.btnAdminLogin);
         forgotPassButton = findViewById(R.id.btnAdminForgotPass);
+        signUpButton = findViewById(R.id.btnSignup);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -78,6 +79,15 @@ public class AdminLogin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ForgotPassword.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),AdminRegistration.class);
                 startActivity(intent);
                 finish();
             }
