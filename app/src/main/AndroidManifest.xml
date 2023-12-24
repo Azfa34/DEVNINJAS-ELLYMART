@@ -43,6 +43,10 @@
             android:name=".NotificationActivity"
             android:exported="false"/>
         <activity
+            android:name=".EditAdminInfoActivity"
+            android:exported="false">
+        </activity>
+        <activity
             android:name=".ForgotPassword"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
