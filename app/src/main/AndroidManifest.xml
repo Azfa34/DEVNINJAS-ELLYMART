@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ELLYMARTARKEDCENGAL"
         tools:targetApi="31">
+
         <activity
             android:name=".WishlistCatalogActivity"
             android:exported="false" />
@@ -35,10 +36,12 @@
         <activity
             android:name=".ProductCatalogActivity"
             android:exported="false" />
-
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+        <activity
+            android:name=".NotificationActivity"
+            android:exported="false"/>
         <activity
             android:name=".ForgotPassword"
             android:exported="true"
