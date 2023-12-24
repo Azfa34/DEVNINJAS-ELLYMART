@@ -18,6 +18,9 @@
         <activity android:name=".AdminCardProduct"
             android:label="Product Card"/>
         <activity
+            android:name=".AdminCardEditProduct"
+            android:label="Product Edit Card"/>
+        <activity
             android:name=".WishlistCatalogActivity"
             android:exported="false" />
         <activity
