@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,6 +10,13 @@
     android:padding="16dp"
     android:background="@color/lightgrey"
     tools:context=".Role">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="280dp"
+        android:layout_height="230dp"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/icon_name_nobg" />
 
     <TextView
         android:id="@+id/textView5"

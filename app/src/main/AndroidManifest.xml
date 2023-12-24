@@ -15,6 +15,8 @@
         android:theme="@style/Theme.ELLYMARTARKEDCENGAL"
         tools:targetApi="31">
 
+        <activity android:name=".AdminCardProduct"
+            android:label="Product Card"/>
         <activity
             android:name=".WishlistCatalogActivity"
             android:exported="false" />

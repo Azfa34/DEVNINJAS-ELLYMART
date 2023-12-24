@@ -3,8 +3,8 @@ package com.example.ellymartarkedcengal;
 import android.content.Intent;
 import android.view.View;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -34,8 +34,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Dashboard extends AppCompatActivity {
+
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
@@ -68,7 +68,6 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-
         adminInfoTextView = findViewById(R.id.adminInfoTextView);
         btnEditAdminInfo = findViewById(R.id.btnEditAdminInfo);
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -82,15 +81,25 @@ public class Dashboard extends AppCompatActivity {
         boolean isAdminUser = intent.getBooleanExtra("isAdminUser", true);
 
         productRecyclerView = findViewById(R.id.recyclerView);
-        productRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false));
+        productRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         productList = new ArrayList<>();
-        productAdapter = new ProductAdapter(this, productList);
+
+        // Pass an instance of the ProductAdapter.OnItemClickListener to the constructor
+        productAdapter = new ProductAdapter(this, productList, new ProductAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Products selectedProduct = productList.get(position);
+                // Redirect to the product card activity with the selected product ID or details
+                openProductCardActivity(selectedProduct.getProductId());
+            }
+        });
+
         productRecyclerView.setAdapter(productAdapter);
 
         wishlist = new ArrayList<>();
         wishlistRecyclerView = findViewById(R.id.wishlistRecyclerView);
         wishlistRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        wishlistAdapter = new WishlistAdapter(this,wishlist);
+        wishlistAdapter = new WishlistAdapter(this, wishlist);
         wishlistRecyclerView.setAdapter(wishlistAdapter);
 
         setNavigationViewHeader(isAdminUser);
@@ -101,18 +110,16 @@ public class Dashboard extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner spinner = findViewById(R.id.spinner); // Make sure to change this to your actual Spinner ID
+        Spinner spinner = findViewById(R.id.spinner);
         spinner.setAdapter(adapter);
-
-        // Step 7: Handle item selection (optional)
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView parentView, View selectedItemView, int position, long id) {
-                // Handle the item selection here
                 String selectedItem = items[position];
                 Toast.makeText(Dashboard.this, "Selected: " + selectedItem, Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
                 // Do nothing here
@@ -143,11 +150,9 @@ public class Dashboard extends AppCompatActivity {
         btnExitEditing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 btnEditAdminInfo.setEnabled(true);
             }
         });
-
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -158,32 +163,26 @@ public class Dashboard extends AppCompatActivity {
                     Intent intent = new Intent(Dashboard.this, Dashboard.class);
                     startActivity(intent);
                     Toast.makeText(Dashboard.this, "Home Selected", Toast.LENGTH_SHORT).show();
-
                 } else if (itemId == R.id.wishlist) {
                     Intent intent = new Intent(Dashboard.this, WishlistForm.class);
                     startActivity(intent);
                     Toast.makeText(Dashboard.this, "Wishlist Selected", Toast.LENGTH_SHORT).show();
-
                 } else if (itemId == R.id.wishlistList) {
                     Intent intent = new Intent(Dashboard.this, WishlistCatalogActivity.class);
                     startActivity(intent);
                     Toast.makeText(Dashboard.this, "Wishlist List Selected", Toast.LENGTH_SHORT).show();
-
                 } else if (itemId == R.id.activity) {
                     Intent intent = new Intent(Dashboard.this, ActivityReport.class);
                     startActivity(intent);
                     Toast.makeText(Dashboard.this, "Activity Selected", Toast.LENGTH_SHORT).show();
-
                 } else if (itemId == R.id.additem) {
                     Intent intent = new Intent(Dashboard.this, NewItemPage.class);
                     startActivity(intent);
                     Toast.makeText(Dashboard.this, "Add New Item Selected", Toast.LENGTH_SHORT).show();
-
                 } else if (itemId == R.id.productlist) {
                     Intent intent = new Intent(Dashboard.this, ProductCatalogActivity.class);
                     startActivity(intent);
                     Toast.makeText(Dashboard.this, "Product List Selected", Toast.LENGTH_SHORT).show();
-
                 } else if (itemId == R.id.notification) {
                     Intent intent = new Intent(Dashboard.this, NotificationActivity.class);
                     startActivity(intent);
@@ -224,6 +223,7 @@ public class Dashboard extends AppCompatActivity {
                 // Handle errors
             }
         });
+
         // Fetch wishlist from Firebase
         DatabaseReference wishlistRef = FirebaseDatabase.getInstance().getReference().child("wishlist");
         wishlistRef.addValueEventListener(new ValueEventListener() {
@@ -246,8 +246,6 @@ public class Dashboard extends AppCompatActivity {
         });
     }
 
-
-
     private void setNavigationViewHeader(boolean isAdminUser) {
         View headerLayout = navigationView.getHeaderView(0);
         TextView ellysMartTextView = headerLayout.findViewById(R.id.ellys_mart_text);
@@ -265,6 +263,7 @@ public class Dashboard extends AppCompatActivity {
             navigationView.inflateMenu(R.menu.cust_menu);
         }
     }
+
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -273,6 +272,7 @@ public class Dashboard extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
     private void openEditAdminInfoActivity() {
         Intent intent = new Intent(this, EditAdminInfoActivity.class);
         intent.putExtra("existingAdminInfo", adminInfoTextView.getText().toString());
@@ -284,7 +284,6 @@ public class Dashboard extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) {
-
             String userId = user.getUid();
 
             DatabaseReference userRef = usersRef.child(userId);
@@ -310,6 +309,7 @@ public class Dashboard extends AppCompatActivity {
             });
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -325,5 +325,15 @@ public class Dashboard extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void openProductCardActivity(String productId) {
+        Intent intent = new Intent(this, AdminCardProduct.class);
+
+        // Pass the productId as an extra to the intent
+        intent.putExtra("productId", productId);
+
+        // Start the activity
+        startActivity(intent);
     }
 }
