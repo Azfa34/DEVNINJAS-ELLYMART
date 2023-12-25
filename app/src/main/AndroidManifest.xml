@@ -48,6 +48,9 @@
             android:name=".NotificationActivity"
             android:exported="false"/>
         <activity
+            android:name=".Cust_NotificationReport"
+            android:exported="false"/>
+        <activity
             android:name=".EditAdminInfoActivity"
             android:exported="false">
         </activity>
