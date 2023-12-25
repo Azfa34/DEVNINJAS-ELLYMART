@@ -49,28 +49,21 @@ public class AdminCardProduct extends AppCompatActivity {
         }
     }
 
-    // You need to implement a method to fetch product details by ID from your data source
     private Products getProductDetailsById(String productId) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("products").child(productId);
 
-        // Assume 'Products' is the node in your Firebase database
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // DataSnapshot contains the product details
-                    Products product = dataSnapshot.getValue(Products.class);
-
-                    // Now you have the actual product details
+                    product = dataSnapshot.getValue(Products.class);
                     if (product != null) {
-                        // Update the UI or perform any additional operations
                         updateUIWithProductDetails(product);
                     }
                 } else {
-                    // Product with the given ID does not exist
+
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Handle the error
@@ -96,8 +89,7 @@ public class AdminCardProduct extends AppCompatActivity {
         if (!TextUtils.isEmpty(imageUrl)) {
             Picasso.get().load(imageUrl).into(productImageView);
         } else {
-            // Handle the case where the image URL is empty or null
-            // You can set a placeholder image or take any other appropriate action
+
             productImageView.setImageResource(R.drawable.baseline_product_list_24);
         }
 
@@ -128,7 +120,9 @@ public class AdminCardProduct extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // User clicked "Yes," delete the product
-                deleteProduct(product.getProductId());
+                if (product != null) {
+                    deleteProduct(product.getProductId());
+                }
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {

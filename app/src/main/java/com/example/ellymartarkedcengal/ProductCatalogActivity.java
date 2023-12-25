@@ -26,18 +26,18 @@ public class ProductCatalogActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_product_catalog);
 
-        // Initialize your product list (you might fetch it from Firebase)
+
         productList = new ArrayList<>();
 
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Initialize the adapter with the click listener
+
         productAdapter = new ProductAdapter(this, productList, new ProductAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Products selectedProduct = productList.get(position);
-                // Redirect to the product card activity with the selected product ID or details
+
                 openProductCardActivity(selectedProduct.getProductId());
             }
         });
@@ -67,15 +67,13 @@ public class ProductCatalogActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 productList.clear(); // Clear existing data
 
-                // Iterate through the dataSnapshot to get product data
+
                 for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
                     Products product = productSnapshot.getValue(Products.class);
                     if (product != null) {
                         productList.add(product);
                     }
                 }
-
-                // Notify the adapter that the data has changed
                 productAdapter.notifyDataSetChanged();
             }
 
@@ -87,7 +85,7 @@ public class ProductCatalogActivity extends AppCompatActivity {
     }
 
     private void openProductCardActivity(String productId) {
-        // Create an Intent to start the ProductCardActivity
+
         Intent intent = new Intent(this, AdminCardProduct.class);
         intent.putExtra("productId", productId);
         startActivity(intent);

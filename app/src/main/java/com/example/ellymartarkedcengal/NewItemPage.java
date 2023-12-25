@@ -100,7 +100,6 @@ public class NewItemPage extends AppCompatActivity {
         double itemPrice = Double.parseDouble(editTextItemPrice.getText().toString());
         String itemDescription = editTextItemDescription.getText().toString();
 
-        // Check if itemPrice is not empty before parsing
         if (!itemName.isEmpty()) {
             Products newItem = new Products(itemName, itemPrice, itemDescription, null);
 
@@ -112,9 +111,6 @@ public class NewItemPage extends AppCompatActivity {
                     .addOnSuccessListener(aVoid -> {
                         // Successfully saved item details, now upload the image
                         StorageReference imageRef = storageReference.child("product_images/" + productId + ".jpg");
-
-                        // Replace this with the actual ImageView for the product image
-                        // Make sure you have a reference to the ImageView in your layout
                         ImageView imageView = findViewById(R.id.imageViewItem); // Update to the correct ID
 
                         if (imageView != null && imageView.getDrawable() != null) {
@@ -138,21 +134,23 @@ public class NewItemPage extends AppCompatActivity {
                                         // Update the product with the download URL
                                         DatabaseReference productToUpdateRef = FirebaseDatabase.getInstance().getReference().child("products").child(productId);
                                         productToUpdateRef.child("imageUrl").setValue(downloadUrl)
-                                                .addOnSuccessListener(aVoid1 -> {
-                                                    newItem.setImageUrl(downloadUrl);
-                                                    Toast.makeText(NewItemPage.this, "Item saved successfully", Toast.LENGTH_SHORT).show();
-                                                })
-                                                .addOnFailureListener(e -> {
-                                                    e.printStackTrace();
-                                                    Toast.makeText(NewItemPage.this, "Failed to update item with download URL", Toast.LENGTH_SHORT).show();
+                                                .addOnCompleteListener(task -> {
+                                                    if (task.isSuccessful()) {
+                                                        newItem.setImageUrl(downloadUrl);
+                                                        Toast.makeText(NewItemPage.this, "Item saved successfully", Toast.LENGTH_SHORT).show();
+                                                        Intent intent = new Intent(NewItemPage.this, ProductCatalogActivity.class);
+                                                        startActivity(intent);
+                                                        finish(); //
+                                                    } else {
+                                                        Toast.makeText(NewItemPage.this, "Failed to update item with download URL", Toast.LENGTH_SHORT).show();
+                                                    }
                                                 });
                                     }).addOnFailureListener(e -> {
                                         e.printStackTrace();
                                     });
                                 }).addOnFailureListener(e -> {
                                     e.printStackTrace();
-                                    // Handle failure to upload image
-                                    Toast.makeText(NewItemPage.this, "Failed to upload item image"+ e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(NewItemPage.this, "Failed to upload item image" + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 });
 
                             } else {

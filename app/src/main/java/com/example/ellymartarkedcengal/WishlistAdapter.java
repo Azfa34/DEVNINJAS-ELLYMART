@@ -43,17 +43,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
 
         Wishlist wishlist = wishlistList.get(holder.getAdapterPosition());
 
-
-        // Set your UI elements with wishlist item data
         holder.wishlistNameTextView.setText(wishlist.getItemName());
-        holder.btnDeleteWishlistItem.setOnClickListener(new View.OnClickListener() {
-        public void onClick(View v) {
-            // Call the deleteWishlistItem method with the Wishlist item ID
-            deleteWishlistItem(wishlistList.get(holder.getAdapterPosition()).getWishProductId());
-        }
-    });
-
-        // Load image using Picasso
         Picasso.get().load(wishlist.getImageUrl()).into(holder.wishlistImageView);
     }
 
@@ -101,13 +91,13 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
         TextView wishlistNameTextView;
         TextView wishlistPriceTextView;
         ImageView wishlistImageView;
-        Button btnDeleteWishlistItem;
+
         public WishlistViewHolder(@NonNull View itemView) {
             super(itemView);
             wishlistNameTextView = itemView.findViewById(R.id.wishlistNameTextView);
             wishlistPriceTextView = itemView.findViewById(R.id.wishlistPriceTextView);
             wishlistImageView = itemView.findViewById(R.id.wishlistImageView);
-            btnDeleteWishlistItem = itemView.findViewById(R.id.btnDeleteWishlistItem);
+
         }
     }
 }
