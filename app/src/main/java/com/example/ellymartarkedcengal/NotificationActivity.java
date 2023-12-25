@@ -1,5 +1,6 @@
 package com.example.ellymartarkedcengal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -7,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.EditText;
+import android.widget.ScrollView;
 
 import android.content.DialogInterface;
 
@@ -18,6 +20,7 @@ public class NotificationActivity extends AppCompatActivity {
     private LinearLayout notificationContainer;
     private AlertDialog alertDialog;
     private int newCardCount = 0;
+    private ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +88,7 @@ public class NotificationActivity extends AppCompatActivity {
 
     private void showNotificationDetailsDialog(String title, String content) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_notification, null);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_notification_details, null);
 
         TextView textViewTopic = dialogView.findViewById(R.id.textViewTopic);
         TextView textViewContent = dialogView.findViewById(R.id.textViewContent);

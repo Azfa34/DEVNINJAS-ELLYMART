@@ -168,34 +168,47 @@ public class Dashboard extends AppCompatActivity {
                     Intent intent = new Intent(Dashboard.this, Dashboard.class);
                     startActivity(intent);
                     Toast.makeText(Dashboard.this, "Home Selected", Toast.LENGTH_SHORT).show();
+
                 } else if (itemId == R.id.wishlist) {
                     Intent intent = new Intent(Dashboard.this, WishlistForm.class);
                     startActivity(intent);
                     Toast.makeText(Dashboard.this, "Wishlist Selected", Toast.LENGTH_SHORT).show();
+
                 } else if (itemId == R.id.wishlistList) {
                     Intent intent = new Intent(Dashboard.this, WishlistCatalogActivity.class);
                     startActivity(intent);
                     Toast.makeText(Dashboard.this, "Wishlist List Selected", Toast.LENGTH_SHORT).show();
+
                 } else if (itemId == R.id.activity) {
                     Intent intent = new Intent(Dashboard.this, ActivityReport.class);
                     startActivity(intent);
                     Toast.makeText(Dashboard.this, "Activity Selected", Toast.LENGTH_SHORT).show();
+
                 } else if (itemId == R.id.additem) {
                     Intent intent = new Intent(Dashboard.this, NewItemPage.class);
                     startActivity(intent);
                     Toast.makeText(Dashboard.this, "Add New Item Selected", Toast.LENGTH_SHORT).show();
+
                 } else if (itemId == R.id.productlist) {
                     Intent intent = new Intent(Dashboard.this, ProductCatalogActivity.class);
                     startActivity(intent);
                     Toast.makeText(Dashboard.this, "Product List Selected", Toast.LENGTH_SHORT).show();
+
                 } else if (itemId == R.id.notification) {
                     Intent intent = new Intent(Dashboard.this, NotificationActivity.class);
                     startActivity(intent);
                     Toast.makeText(Dashboard.this, "Notification Selected", Toast.LENGTH_SHORT).show();
+
+                } else if (itemId == R.id.notificationReport) {
+                    Intent intent = new Intent(Dashboard.this, Cust_NotificationReport.class);
+                    startActivity(intent);
+                    Toast.makeText(Dashboard.this, "Notification Selected", Toast.LENGTH_SHORT).show();
+
                 } else if (itemId == R.id.productlist) {
                     Intent intent = new Intent(Dashboard.this, ProductCatalogActivity.class);
                     startActivity(intent);
                     Toast.makeText(Dashboard.this, "Product List Selected", Toast.LENGTH_SHORT).show();
+
                 } else if (itemId == R.id.profile) {
                     Intent intent = new Intent(Dashboard.this, MainActivity.class);
                     startActivity(intent);

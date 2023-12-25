@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    app:cardCornerRadius="30dp"
+    android:elevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="16dp">
+
+        <ImageButton
+            android:id="@+id/imageButtonAddCustomer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_input_add"
+            android:contentDescription="Add Notification"
+            android:background="?android:attr/selectableItemBackground"
+            android:padding="8dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/notificationTextViewCustomer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textStyle="bold"
+            android:padding="8dp"/>
+
+        <Button
+            android:id="@+id/btnSeeDetailsCustomer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="See Details"
+            android:layout_gravity="end"
+            android:textColor="@android:color/black"
+            android:textStyle="normal"
+            android:textAllCaps="false"
+            android:background="?android:attr/selectableItemBackground"
+            android:padding="8dp"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
