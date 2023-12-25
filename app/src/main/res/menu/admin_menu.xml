@@ -5,10 +5,6 @@
             android:icon="@drawable/baseline_home_24"
             android:title="Home"
             />
-        <item android:id="@+id/wishlist"
-            android:icon="@drawable/baseline_wishlist_add_24"
-            android:title="Wishlist"
-            />
         <item android:id="@+id/wishlistList"
             android:icon="@drawable/baseline_wishlist_add_24"
             android:title="Wishlist Product List"
