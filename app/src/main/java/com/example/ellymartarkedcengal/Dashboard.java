@@ -40,6 +40,8 @@ public class Dashboard extends AppCompatActivity {
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
     TextView adminInfoTextView;
+    TextView adminEmailTextview;
+    TextView adminTelNumberTextview;
     Button btnEditAdminInfo;
     DatabaseReference usersRef;
     RecyclerView productRecyclerView;
@@ -69,6 +71,9 @@ public class Dashboard extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         adminInfoTextView = findViewById(R.id.adminInfoTextView);
+        adminEmailTextview = findViewById(R.id.adminEmailTextView);
+        adminTelNumberTextview = findViewById(R.id.adminTelNumberTextView);
+
         btnEditAdminInfo = findViewById(R.id.btnEditAdminInfo);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -293,12 +298,16 @@ public class Dashboard extends AppCompatActivity {
                     if (dataSnapshot.exists()) {
                         String adminName = dataSnapshot.child("name").getValue(String.class);
                         String adminEmail = user.getEmail();
+                        String telNumber = dataSnapshot.child("phonenumber").getValue(String.class);
 
-                        if (adminName != null) {
-                            adminInfoTextView.setText("Admin Name: " + adminName + "\nAdmin Email: " + adminEmail);
-                        } else {
-                            adminInfoTextView.setText("Admin Email: " + adminEmail);
-                        }
+                        // Display admin's name or email
+                        adminInfoTextView.setText(adminName);
+
+                        // Display admin's email
+                        adminEmailTextview.setText(adminEmail); // Fix variable name
+
+                        // Display admin's phone number
+                        adminTelNumberTextview.setText(telNumber != null ? telNumber : "N/A"); // Fix variable name
                     }
                 }
 
@@ -309,6 +318,7 @@ public class Dashboard extends AppCompatActivity {
             });
         }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

@@ -60,7 +60,7 @@
             android:id="@+id/textViewTelNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TEL number:"/>
+            android:text="Phone Number:"/>
 
         <TextView
             android:id="@+id/adminTelNumberTextView"
