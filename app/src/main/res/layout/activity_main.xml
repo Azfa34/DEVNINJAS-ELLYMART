@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
     android:background="@color/lightgrey"
     tools:context=".MainActivity">
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
@@ -20,6 +22,8 @@
         android:textColor="@color/black"
         android:textSize="30dp"
         android:textStyle="bold"/>
+
+
 
     <ImageView
         android:id="@+id/profileImageView"
@@ -60,6 +64,47 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="16dp" />
 
+    <TextView
+        android:id="@+id/textViewName"
+        style="@style/BlackText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Name:"/>
+
+    <TextView
+        android:id="@+id/adminNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="John Doe"/>
+
+    <TextView
+        android:id="@+id/textViewEmail"
+        style="@style/BlackText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Email:"/>
+
+    <TextView
+        android:id="@+id/adminEmailTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="john.doe@example.com"/>
+
+    <TextView
+        android:id="@+id/textViewTelNumber"
+        style="@style/BlackText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Phone Number:"/>
+
+    <TextView
+        android:id="@+id/adminTelNumberTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="1234567890"/>
 
     <TextView
         android:id="@+id/textView7"
@@ -153,7 +198,6 @@
         android:layout_gravity="center"
         android:text="Show Products" />
 
-
-
-
 </LinearLayout>
+</ScrollView>
+

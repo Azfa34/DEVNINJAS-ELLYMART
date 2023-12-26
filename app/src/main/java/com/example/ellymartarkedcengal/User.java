@@ -4,6 +4,7 @@ public class User {
     private String userId;
     private String name;
     private String phonenumber;
+    private String profileImageUrl; // New field for profile image URL
 
     // Constructors, getters, and setters
 
@@ -12,14 +13,14 @@ public class User {
     }
 
     // Parameterized constructor
-    public User(String userId, String name, String phonenumber) {
+    public User(String userId, String name, String phonenumber, String profileImageUrl) {
         this.userId = userId;
         this.name = name;
         this.phonenumber = phonenumber;
+        this.profileImageUrl = profileImageUrl;
     }
 
     // Getters and setters go here
-
 
     public String getUserId() {
         return userId;
@@ -45,6 +46,11 @@ public class User {
         this.phonenumber = phonenumber;
     }
 
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
 
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
 }
-
