@@ -26,6 +26,7 @@
 
 
     <TextView
+        style="@style/BlackText"
         android:id="@+id/wishlistNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,6 +38,7 @@
         />
 
     <TextView
+        style="@style/BlackText"
         android:id="@+id/wishlistPriceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,6 +49,7 @@
         />
 
     <TextView
+        style="@style/BlackText"
         android:id="@+id/wishlistAvailabilityTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
