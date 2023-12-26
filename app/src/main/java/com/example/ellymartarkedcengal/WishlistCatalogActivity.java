@@ -2,6 +2,7 @@ package com.example.ellymartarkedcengal;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +30,7 @@ public class WishlistCatalogActivity extends AppCompatActivity {
 
         wishlistList = new ArrayList<>();
         wishlistRecyclerView = findViewById(R.id.wishlistRecyclerView);
-        wishlistRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        wishlistRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         wishlistAdapter = new WishlistAdapter(this,wishlistList);
         wishlistRecyclerView.setAdapter(wishlistAdapter);
