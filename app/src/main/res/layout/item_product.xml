@@ -2,16 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginStart="50dp"
     android:layout_marginEnd="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp">
 
-    <ImageView
-        android:id="@+id/productImageView"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:scaleType="centerCrop" />
+        android:layout_gravity="center"
+        app:cardCornerRadius="15dp">
+
+        <ImageView
+            android:id="@+id/productImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+
+            />
+
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/productNameTextView"
@@ -19,9 +31,8 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:layout_below="@id/productImageView"
-        android:layout_centerHorizontal="true"
-        />
+        android:layout_below="@id/cardView"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/productPriceTextView"
@@ -29,8 +40,7 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:layout_below="@id/productNameTextView"
-        android:layout_centerHorizontal="true"
-        />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/productAvailabilityTextView"
@@ -38,12 +48,10 @@
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:layout_below="@id/productPriceTextView"
-        android:layout_centerHorizontal="true"
-        />
-
-
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
+
 
 
 

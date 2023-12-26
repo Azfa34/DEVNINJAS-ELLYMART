@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.DataSnapshot;
@@ -26,21 +27,19 @@ public class ProductCatalogActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_product_catalog);
 
-
         productList = new ArrayList<>();
 
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // Set the grid layout manager with 2 columns
 
         productAdapter = new ProductAdapter(this, productList, new ProductAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Products selectedProduct = productList.get(position);
-
                 openProductCardActivity(selectedProduct.getProductId());
             }
         });
+
         recyclerView.setAdapter(productAdapter);
 
         // Initialize Firebase
@@ -48,15 +47,6 @@ public class ProductCatalogActivity extends AppCompatActivity {
 
         // Fetch data from Firebase
         fetchDataFromFirebase();
-
-        productAdapter.setOnItemClickListener(new ProductAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Products selectedProduct = productList.get(position);
-                // Redirect to the product card activity with the selected product ID or details
-                openProductCardActivity(selectedProduct.getProductId());
-            }
-        });
     }
 
     private void fetchDataFromFirebase() {
@@ -66,7 +56,6 @@ public class ProductCatalogActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 productList.clear(); // Clear existing data
-
 
                 for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
                     Products product = productSnapshot.getValue(Products.class);
@@ -85,7 +74,6 @@ public class ProductCatalogActivity extends AppCompatActivity {
     }
 
     private void openProductCardActivity(String productId) {
-
         Intent intent = new Intent(this, AdminCardProduct.class);
         intent.putExtra("productId", productId);
         startActivity(intent);
