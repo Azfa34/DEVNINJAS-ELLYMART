@@ -6,11 +6,18 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ScrollView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Cust_NotificationReport extends AppCompatActivity {
+    private DatabaseReference databaseReference;
 
     private LinearLayout notificationContainer;
     private AlertDialog alertDialog;
@@ -20,6 +27,7 @@ public class Cust_NotificationReport extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cust_notification_report);
+        databaseReference = FirebaseDatabase.getInstance().getReference("notifications");
 
         notificationContainer = findViewById(R.id.notificationContainerCustomer);
         scrollView = findViewById(R.id.scrollViewCustomer);
@@ -32,7 +40,27 @@ public class Cust_NotificationReport extends AppCompatActivity {
                 clearNotifications();
             }
         });
+        displayNotificationsFromFirebase();
+    }
 
+    private void displayNotificationsFromFirebase() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot notificationSnapshot : dataSnapshot.getChildren()) {
+                    String title = notificationSnapshot.child("title").getValue(String.class);
+                    String content = notificationSnapshot.child("content").getValue(String.class);
+
+                    // Create and display a card with the notification data
+                    createNewCustomerCard(title, content);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle error
+            }
+        });
     }
 
     private void createNewCustomerCard(String title, String content) {

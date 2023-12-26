@@ -9,13 +9,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.ScrollView;
-
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import android.content.DialogInterface;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class NotificationActivity extends AppCompatActivity {
+    private DatabaseReference databaseReference;
 
     private LinearLayout notificationContainer;
     private AlertDialog alertDialog;
@@ -26,6 +28,7 @@ public class NotificationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
+        databaseReference = FirebaseDatabase.getInstance().getReference("notifications");
 
         notificationContainer = findViewById(R.id.notificationContainer);
 
@@ -84,6 +87,13 @@ public class NotificationActivity extends AppCompatActivity {
         notificationContainer.addView(cardView, notificationContainer.getChildCount() - 1);
 
         newCardCount++;
+        saveNotificationToFirebase(title, content);
+    }
+
+    private void saveNotificationToFirebase(String title, String content) {
+        DatabaseReference newNotificationRef = databaseReference.push();
+        newNotificationRef.child("title").setValue(title);
+        newNotificationRef.child("content").setValue(content);
     }
 
     private void showNotificationDetailsDialog(String title, String content) {

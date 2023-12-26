@@ -352,11 +352,7 @@ public class Dashboard extends AppCompatActivity {
 
     private void openProductCardActivity(String productId) {
         Intent intent = new Intent(this, AdminCardProduct.class);
-
-        // Pass the productId as an extra to the intent
         intent.putExtra("productId", productId);
-
-        // Start the activity
         startActivity(intent);
     }
 }
