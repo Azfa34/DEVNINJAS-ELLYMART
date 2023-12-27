@@ -1,12 +1,11 @@
 package com.example.ellymartarkedcengal;
 
-import android.content.ContentResolver;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,11 +15,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,14 +32,13 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 
+
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private Button button;
     private Button saveButton;
     private TextView textView;
-    private TextView adminNameTextView;
-    private TextView adminEmailTextview;
-    private TextView adminTelNumberTextview;
+
     private EditText nameEditText;
     private EditText phoneNumberEditText;
     private DatabaseReference usersRef;
@@ -73,9 +69,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         auth = FirebaseAuth.getInstance();
         button = findViewById(R.id.logout);
-        textView = findViewById(R.id.user_details);
         user = auth.getCurrentUser();
-
         profileImageView = findViewById(R.id.profileImageView);
         Button selectImageButton = findViewById(R.id.btnSelectProfileImage);
 
@@ -94,8 +88,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         });
 
-        nameEditText = findViewById(R.id.etAdminName);
-        phoneNumberEditText = findViewById(R.id.editTextPhoneNumber);
+
         saveButton = findViewById(R.id.buttonSave);
 
         saveButton.setOnClickListener(v -> saveUserDetails());
@@ -139,9 +132,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void openImagePicker() {
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -162,15 +157,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadProfileImage() {
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        String uriString = prefs.getString(PROFILE_IMAGE_URI, null);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String userId = user.getUid();
 
-        if (uriString != null) {
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String imageUrl = dataSnapshot.child("profileImageUrl").getValue(String.class);
+                        if (imageUrl != null && !imageUrl.isEmpty()) {
+                            // Load and display the image using Picasso
+                            profileImageUri = Uri.parse(imageUrl);
+                            displayProfileImage();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // Handle errors
+                    Log.e("FirebaseDatabase", "Error loading profile image from Firebase", databaseError.toException());
+                }
+            });
+        }
+    }
+
+    private void displayProfileImage() {
+        Log.d("DEBUG", "displayProfileImage: Attempting to load image");
+
+        if (profileImageUri != null) {
             // If there's a stored image URL, load it using Picasso
-            profileImageUri = Uri.parse(uriString);
-            displayProfileImage();
+            Picasso.get().load(profileImageUri).into(profileImageView);
         } else {
-            // If there's no stored image URL, fetch it from Firebase Realtime Database
+            // Fetch the image URL from Firebase Realtime Database
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
                 String userId = user.getUid();
@@ -182,14 +203,9 @@ public class MainActivity extends AppCompatActivity {
                         if (dataSnapshot.exists()) {
                             String imageUrl = dataSnapshot.child("profileImageUrl").getValue(String.class);
                             if (imageUrl != null && !imageUrl.isEmpty()) {
-                                // Save the retrieved image URL to SharedPreferences
-                                SharedPreferences.Editor editor = prefs.edit();
-                                editor.putString(PROFILE_IMAGE_URI, imageUrl);
-                                editor.apply();
-
                                 // Load and display the image using Picasso
-                                profileImageUri = Uri.parse(imageUrl);
-                                displayProfileImage();
+                                Log.d("DEBUG", "displayProfileImage: Loading image from URL");
+                                Picasso.get().load(imageUrl).into(profileImageView);
                             }
                         }
                     }
@@ -197,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         // Handle errors
+                        Log.e("FirebaseDatabase", "Error loading profile image from Firebase", databaseError.toException());
                     }
                 });
             }
@@ -204,11 +221,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void displayProfileImage() {
-        if (profileImageUri != null) {
-            Picasso.get().load(profileImageUri).into(profileImageView);
-        }
-    }
+
+
+
 
     private void setUpSpinner() {
         String[] items = {"Open", "On Break", "Closed"};
