@@ -106,6 +106,13 @@ public class Cust_NotificationReport extends AppCompatActivity {
     }
 
     private void clearNotifications() {
-        notificationContainer.removeAllViews();
+        LinearLayout notificationContainer = findViewById(R.id.notificationContainerCustomer);
+
+        for (int i = 0; i < notificationContainer.getChildCount(); i++) {
+            View childView = notificationContainer.getChildAt(i);
+            if (!(childView instanceof Button)) {
+                notificationContainer.removeView(childView);
+            }
+        }
     }
 }
