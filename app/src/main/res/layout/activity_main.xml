@@ -9,7 +9,8 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp">
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
@@ -72,7 +73,7 @@
         android:text="Name:"/>
 
     <TextView
-        android:id="@+id/adminNameTextView"
+        android:id="@+id/adminInfoTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -106,24 +107,28 @@
         android:layout_marginBottom="16dp"
         android:text="1234567890"/>
 
+    <Button
+        android:id="@+id/btnEditAdminInfo"
+        android:layout_width="299dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Edit"
+        android:onClick="openEditAdminInfoActivity"/>
 
     <Button
         android:id="@+id/buttonSave"
         android:layout_width="299dp"
-        android:layout_height="55dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:text="Save"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="5dp"
+        android:text="Save" />
 
     <Button
         android:id="@+id/logout"
         android:layout_width="299dp"
-        android:layout_height="55dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:text="@string/logout"
-        />
-
-
+        android:text="@string/logout" />
 
 </LinearLayout>
 </ScrollView>

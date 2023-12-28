@@ -1,6 +1,5 @@
 package com.example.ellymartarkedcengal;
 
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,35 +29,34 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-
-
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private Button button;
     private Button saveButton;
-    private TextView textView;
-
-    private EditText nameEditText;
-    private EditText phoneNumberEditText;
+    Button btnEditAdminInfo;
     private DatabaseReference usersRef;
     private FirebaseUser user;
     private static final String STORAGE_PATH = "profile_images/";
 
     private StorageReference storageReference;
-
+    private static final int EDIT_ADMIN_INFO_REQUEST = 1;
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final String PREFS_NAME = "UserProfilePrefs";
     private static final String PROFILE_IMAGE_URI = "profileImageUri";
 
     private ImageView profileImageView;
     private Uri profileImageUri;
-
+    TextView adminInfoTextView;
+    TextView adminEmailTextView;
+    TextView adminTelNumberTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        adminInfoTextView = findViewById(R.id.adminInfoTextView);
+        adminTelNumberTextView = findViewById(R.id.adminTelNumberTextView);
+        adminEmailTextView = findViewById(R.id.adminEmailTextView);
         // Initialize Firebase Storage
         storageReference = FirebaseStorage.getInstance().getReference();
 
@@ -69,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         auth = FirebaseAuth.getInstance();
         button = findViewById(R.id.logout);
+        btnEditAdminInfo = findViewById(R.id.btnEditAdminInfo);
         user = auth.getCurrentUser();
         profileImageView = findViewById(R.id.profileImageView);
         Button selectImageButton = findViewById(R.id.btnSelectProfileImage);
@@ -88,12 +86,25 @@ public class MainActivity extends AppCompatActivity {
             finish();
         });
 
-
         saveButton = findViewById(R.id.buttonSave);
 
         saveButton.setOnClickListener(v -> saveUserDetails());
+        btnEditAdminInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openEditAdminInfoActivity();
+            }
+        });
     }
 
+    private void openEditAdminInfoActivity() {
+        Intent intent = new Intent(this, EditAdminInfoActivity.class);
+        intent.putExtra("existingAdminInfo", adminInfoTextView.getText().toString());
+        intent.putExtra("editedTelNumber", adminTelNumberTextView.getText().toString()); // Pass the existing telephone number
+        intent.putExtra("isEditingMode", true);
+        intent.putExtra("userId", user.getUid()); // Pass the user ID here
+        startActivityForResult(intent, EDIT_ADMIN_INFO_REQUEST);
+    }
 
     private void updateAdminDetails() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -110,13 +121,8 @@ public class MainActivity extends AppCompatActivity {
                         String adminEmail = user.getEmail();
                         String telNumber = dataSnapshot.child("phonenumber").getValue(String.class);
 
-                        // Assuming you have TextViews in your layout for displaying admin details
-                       TextView adminNameTextView = findViewById(R.id.adminNameTextView);
-                        TextView adminEmailTextView = findViewById(R.id.adminEmailTextView);
-                        TextView adminTelNumberTextView = findViewById(R.id.adminTelNumberTextView);
-
                         // Display admin's name
-                        adminNameTextView.setText(adminName);
+                        adminInfoTextView.setText(adminName);
                         adminEmailTextView.setText(adminEmail);
                         adminTelNumberTextView.setText(telNumber);
                     }
@@ -130,23 +136,35 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == EDIT_ADMIN_INFO_REQUEST && resultCode == RESULT_OK) {
+            if (data != null) {
+                String editedAdminInfo = data.getStringExtra("editedAdminInfo");
+                String editedTelNumber = data.getStringExtra("editedTelNumber"); // Add this line to retrieve the edited telephone number
+                boolean isEditingMode = data.getBooleanExtra("isEditingMode", false);
+
+                adminInfoTextView.setText(editedAdminInfo);
+                // Assuming you have a TextView for displaying telephone number
+                adminTelNumberTextView.setText(editedTelNumber);
+
+                if (!isEditingMode) {
+                    // btnEditAdminInfo.setEnabled(true); // Uncomment this line if you need it
+                }
+            }
+        } else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            profileImageUri = data.getData();
+            saveProfileImage();
+            displayProfileImage();
+        }
+    }
 
     private void openImagePicker() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            profileImageUri = data.getData();
-            saveProfileImage();
-            displayProfileImage();
-        }
     }
 
     private void saveProfileImage() {
@@ -220,11 +238,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-
-
     private void setUpSpinner() {
         String[] items = {"Open", "On Break", "Closed"};
 
@@ -250,12 +263,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveUserDetails() {
+        // Since there are no EditText fields, I assume you have the necessary TextViews for name and phone number
         String userId = auth.getCurrentUser().getUid();
-        String name = nameEditText.getText().toString().trim();
-        String phoneNumber = phoneNumberEditText.getText().toString().trim();
+        String name = adminInfoTextView.getText().toString().trim();
+        String email = adminEmailTextView.getText().toString().trim();// Assuming adminInfoTextView is the TextView for admin name
+        String phoneNumber = adminTelNumberTextView.getText().toString().trim(); // Assuming adminTelNumberTextView is the TextView for phone number
 
         if (!name.isEmpty() && !phoneNumber.isEmpty()) {
-            User user = new User(userId, name, phoneNumber, ""); // Initialize profileImageUrl with an empty string
+            User user = new User(userId, name, email, phoneNumber, ""); // Initialize profileImageUrl with an empty string
 
             // Upload the image to Firebase Storage
             if (profileImageUri != null) {
@@ -287,11 +302,17 @@ public class MainActivity extends AppCompatActivity {
                 });
             } else {
                 // If no image selected, save user details without an image
+                updateUserDataInDatabase(userId, user);
                 usersRef.child(userId).setValue(user);
                 Toast.makeText(MainActivity.this, "Details saved successfully", Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(MainActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void updateUserDataInDatabase(String userId, User user) {
+        // Update user details in Firebase Realtime Database
+        usersRef.child(userId).setValue(user);
     }
 }

@@ -8,7 +8,7 @@ public class User {
 
     // Constructors, getters, and setters
 
-    public User() {
+    public User(String userId, String name, String email, String phoneNumber, String s) {
         // Default constructor is needed for Firebase to be able to deserialize the object
     }
 
