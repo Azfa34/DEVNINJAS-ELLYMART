@@ -2,29 +2,22 @@ package com.example.ellymartarkedcengal;
 
 import android.content.Intent;
 import android.view.View;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.google.android.material.navigation.NavigationView;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,10 +32,6 @@ public class Dashboard extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
-    TextView adminInfoTextView;
-    TextView adminEmailTextview;
-    TextView adminTelNumberTextview;
-    Button btnEditAdminInfo;
     DatabaseReference usersRef;
     RecyclerView productRecyclerView;
     RecyclerView wishlistRecyclerView;
@@ -50,7 +39,7 @@ public class Dashboard extends AppCompatActivity {
     private WishlistAdapter wishlistAdapter;
     private List<Products> productList;
     private List<Wishlist> wishlist;
-    private static final int EDIT_ADMIN_INFO_REQUEST = 1;
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -70,11 +59,6 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        adminInfoTextView = findViewById(R.id.adminInfoTextView);
-        adminEmailTextview = findViewById(R.id.adminEmailTextView);
-        adminTelNumberTextview = findViewById(R.id.adminTelNumberTextView);
-
-        btnEditAdminInfo = findViewById(R.id.btnEditAdminInfo);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
@@ -94,7 +78,6 @@ public class Dashboard extends AppCompatActivity {
             @Override
             public void onItemClick(int position) {
                 Products selectedProduct = productList.get(position);
-                // Redirect to the product card activity with the selected product ID or details
                 openProductCardActivity(selectedProduct.getProductId());
             }
         });
@@ -108,7 +91,6 @@ public class Dashboard extends AppCompatActivity {
         wishlistRecyclerView.setAdapter(wishlistAdapter);
 
         setNavigationViewHeader(isAdminUser);
-        updateAdminInfoDisplay();
         fetchProductsFromDatabase();
 
         String[] items = {"Open", "On Break", "Closed"};
@@ -130,14 +112,8 @@ public class Dashboard extends AppCompatActivity {
                 // Do nothing here
             }
         });
-        btnEditAdminInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openEditAdminInfoActivity();
-            }
-        });
 
-        Button btnExitEditing = findViewById(R.id.btnExitEditing);
+
 
         Button btnNotification = findViewById(R.id.btnNotifications);
         if (isAdminUser) {
@@ -152,12 +128,6 @@ public class Dashboard extends AppCompatActivity {
             btnNotification.setVisibility(View.GONE);
         }
 
-        btnExitEditing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnEditAdminInfo.setEnabled(true);
-            }
-        });
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -247,7 +217,7 @@ public class Dashboard extends AppCompatActivity {
         wishlistRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                wishlist.clear();  // Clear the existing wishlist
+                wishlist.clear();
                 for (DataSnapshot wishlistSnapshot : dataSnapshot.getChildren()) {
                     Wishlist wishlistItem = wishlistSnapshot.getValue(Wishlist.class);
                     if (wishlistItem != null) {
@@ -288,65 +258,6 @@ public class Dashboard extends AppCompatActivity {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-        }
-    }
-
-    private void openEditAdminInfoActivity() {
-        Intent intent = new Intent(this, EditAdminInfoActivity.class);
-        intent.putExtra("existingAdminInfo", adminInfoTextView.getText().toString());
-        intent.putExtra("isEditingMode", true);
-        startActivityForResult(intent, EDIT_ADMIN_INFO_REQUEST);
-    }
-
-    private void updateAdminInfoDisplay() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (user != null) {
-            String userId = user.getUid();
-
-            DatabaseReference userRef = usersRef.child(userId);
-            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        String adminName = dataSnapshot.child("name").getValue(String.class);
-                        String adminEmail = user.getEmail();
-                        String telNumber = dataSnapshot.child("phonenumber").getValue(String.class);
-
-                        // Display admin's name or email
-                        adminInfoTextView.setText(adminName);
-
-                        // Display admin's email
-                        adminEmailTextview.setText(adminEmail); // Fix variable name
-
-                        // Display admin's phone number
-                        adminTelNumberTextview.setText(telNumber != null ? telNumber : "N/A"); // Fix variable name
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    // Handle errors
-                }
-            });
-        }
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == EDIT_ADMIN_INFO_REQUEST && resultCode == RESULT_OK) {
-            if (data != null) {
-                String editedAdminInfo = data.getStringExtra("editedAdminInfo");
-                boolean isEditingMode = data.getBooleanExtra("isEditingMode", false);
-
-                adminInfoTextView.setText(editedAdminInfo);
-
-                if (!isEditingMode) {
-                    btnEditAdminInfo.setEnabled(true);
-                }
-            }
         }
     }
 

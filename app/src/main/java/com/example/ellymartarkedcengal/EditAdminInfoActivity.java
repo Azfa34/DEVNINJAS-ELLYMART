@@ -53,7 +53,6 @@ public class EditAdminInfoActivity extends AppCompatActivity {
         String userId = getIntent().getStringExtra("userId");
         setResult(RESULT_OK, resultIntent);
 
-        // If it's in editing mode, update the details in the database
         if (isEditingMode) {
             updateDetailsInDatabase(editedAdminInfo, editedTelNumber);
         }
@@ -62,12 +61,9 @@ public class EditAdminInfoActivity extends AppCompatActivity {
     }
 
     private void updateDetailsInDatabase(String editedAdminInfo, String editedTelNumber) {
-        // Retrieve the user ID or any unique identifier for the user
-        // For demonstration purposes, I'm assuming you have a key or ID passed through Intent
+
         String userId = getIntent().getStringExtra("userId");
 
-        // Update the details in the database using the retrieved user ID
-        // Replace "users" with the actual reference to your database node
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
 
         // Update the specific fields in the database

@@ -39,49 +39,6 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp" />
 
-        <TextView
-            android:id="@+id/textViewName"
-            style="@style/BlackText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Name:"/>
-
-        <TextView
-            android:id="@+id/adminInfoTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="John Doe"/>
-
-        <TextView
-            android:id="@+id/textViewEmail"
-            style="@style/BlackText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Email:"/>
-
-        <TextView
-            android:id="@+id/adminEmailTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="john.doe@example.com"/>
-
-        <TextView
-            android:id="@+id/textViewTelNumber"
-            style="@style/BlackText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Phone Number:"/>
-
-        <TextView
-            android:id="@+id/adminTelNumberTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="1234567890"/>
-
-
 
         <TextView
             android:id="@+id/textView10"
@@ -146,53 +103,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/extraProductLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/extraProductImageView"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:scaleType="centerCrop" />
-
-            <TextView
-                android:id="@+id/extraProductNameTextView"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/extraProductPriceTextView"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/extraProductAvailabilityTextView"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btnEditAdminInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Edit"
-            android:onClick="openEditAdminInfoActivity"/>
-
-
-        <Button
-            android:id="@+id/btnExitEditing"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Exit Editing"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"/>
 
         <Button
             android:id="@+id/btnNotifications"
