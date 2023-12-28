@@ -9,10 +9,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.ScrollView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import android.content.DialogInterface;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,6 +30,7 @@ public class NotificationActivity extends AppCompatActivity {
     private int newCardCount = 0;
     private ScrollView scrollView;
 
+  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +49,48 @@ public class NotificationActivity extends AppCompatActivity {
                 clearNotifications();
             }
         });
+
+        // Display notifications when the activity is created
+        displayNotificationsFromFirebase();
     }
+
+    private void displayNotificationsFromFirebase() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot notificationSnapshot : dataSnapshot.getChildren()) {
+                    String title = notificationSnapshot.child("title").getValue(String.class);
+                    String content = notificationSnapshot.child("content").getValue(String.class);
+
+                    // Create and display a card with the notification data
+                    createNewCustomerCard(title, content);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle error
+            }
+        });
+    }
+
+    private void createNewCustomerCard(String title, String content) {
+        View cardView = getLayoutInflater().inflate(R.layout.card_notification_customer, null);
+
+        TextView notificationTextView = cardView.findViewById(R.id.notificationTextViewCustomer);
+        notificationTextView.setText(title + "\n" + content);
+
+        Button btnSeeDetails = cardView.findViewById(R.id.btnSeeDetailsCustomer);
+        btnSeeDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showNotificationDetailsDialog(title, content);
+            }
+        });
+
+        notificationContainer.addView(cardView);
+    }
+
 
     private void showAddNotificationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
