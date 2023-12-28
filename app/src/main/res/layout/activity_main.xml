@@ -69,42 +69,47 @@
         style="@style/BlackText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Name:"/>
+        android:text="Name:"
+        android:padding="10dp"/>
 
     <TextView
         android:id="@+id/adminNameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="John Doe"/>
+        android:text="John Doe"
+        android:padding="10dp"/>
 
     <TextView
         android:id="@+id/textViewEmail"
         style="@style/BlackText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Email:"/>
+        android:text="Email:"
+        android:padding="10dp"/>
 
     <TextView
         android:id="@+id/adminEmailTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="john.doe@example.com"/>
+        android:text="john.doe@example.com"
+        android:padding="10dp"/>
 
     <TextView
         android:id="@+id/textViewTelNumber"
         style="@style/BlackText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Phone Number:"/>
+        android:text="Phone Number:"
+        android:padding="10dp"/>
 
     <TextView
         android:id="@+id/adminTelNumberTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="1234567890"/>
+        android:text="1234567890"
+        android:padding="10dp"/>
 
 
     <Button
