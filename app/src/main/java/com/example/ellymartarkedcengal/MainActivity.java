@@ -1,7 +1,6 @@
 package com.example.ellymartarkedcengal;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,24 +30,20 @@ import com.google.firebase.storage.UploadTask;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
-    Button button;
-    Button saveButton;
-    Button btnEditAdminInfo;
+    private Button button;
+    private Button btnEditAdminInfo;
     private DatabaseReference usersRef;
     private FirebaseUser user;
     private static final String STORAGE_PATH = "profile_images/";
-
     private StorageReference storageReference;
     private static final int EDIT_ADMIN_INFO_REQUEST = 1;
-    private static final int PICK_IMAGE_REQUEST = 1;
-    private static final String PREFS_NAME = "UserProfilePrefs";
-    private static final String PROFILE_IMAGE_URI = "profileImageUri";
+    private static final int PICK_IMAGE_REQUEST = 2;
 
     private ImageView profileImageView;
     private Uri profileImageUri;
-    TextView adminInfoTextView;
-    TextView adminEmailTextView;
-    TextView adminTelNumberTextView;
+    private TextView adminInfoTextView;
+    private TextView adminEmailTextView;
+    private TextView adminTelNumberTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,18 +77,13 @@ public class MainActivity extends AppCompatActivity {
             finish();
         });
 
-        saveButton = findViewById(R.id.buttonSave);
-
-        saveButton.setOnClickListener(v -> saveUserDetails());
-        btnEditAdminInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openEditAdminInfoActivity();
-            }
-        });
+        btnEditAdminInfo.setOnClickListener(v -> openEditAdminInfoActivity());
     }
 
     private void openEditAdminInfoActivity() {
+        // Save user details before opening the edit activity
+        saveUserDetails();
+
         Intent intent = new Intent(this, EditAdminInfoActivity.class);
         intent.putExtra("existingAdminInfo", adminInfoTextView.getText().toString());
         intent.putExtra("editedTelNumber", adminTelNumberTextView.getText().toString());
@@ -159,14 +149,43 @@ public class MainActivity extends AppCompatActivity {
     private void openImagePicker() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST); // Use the updated request code
     }
 
     private void saveProfileImage() {
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(PROFILE_IMAGE_URI, profileImageUri.toString());
-        editor.apply();
+        String userId = auth.getCurrentUser().getUid();
+
+        if (profileImageUri != null) {
+            StorageReference imageRef = storageReference.child(STORAGE_PATH + userId);
+            UploadTask uploadTask = imageRef.putFile(profileImageUri);
+
+            uploadTask.continueWithTask(task -> {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+                return imageRef.getDownloadUrl();
+            }).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    if (downloadUri != null) {
+                        updateProfileImageInDatabase(userId, downloadUri.toString());
+                        Toast.makeText(MainActivity.this, "Profile image saved successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Failed to get download URL", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "Failed to upload image", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            // Handle case where no image is selected
+            updateProfileImageInDatabase(userId, null);
+        }
+    }
+
+    private void updateProfileImageInDatabase(String userId, String imageUrl) {
+        // Update user's profile image URL in Firebase Realtime Database
+        usersRef.child(userId).child("profileImageUrl").setValue(imageUrl);
     }
 
     private void loadProfileImage() {
@@ -203,7 +222,6 @@ public class MainActivity extends AppCompatActivity {
         if (profileImageUri != null) {
             Picasso.get().load(profileImageUri).into(profileImageView);
         } else {
-
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
                 String userId = user.getUid();
@@ -263,43 +281,46 @@ public class MainActivity extends AppCompatActivity {
         if (!name.isEmpty() && !phoneNumber.isEmpty()) {
             User user = new User(userId, name, email, phoneNumber, "");
 
-            // Upload the image to Firebase Storage
+            // Check if the profile picture has changed
             if (profileImageUri != null) {
-                StorageReference imageRef = storageReference.child(STORAGE_PATH + userId);
-                UploadTask uploadTask = imageRef.putFile(profileImageUri);
-
-                uploadTask.continueWithTask(task -> {
-                    if (!task.isSuccessful()) {
-                        throw task.getException();
-                    }
-                    return imageRef.getDownloadUrl();
-                }).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        // Image uploaded successfully, get the URL
-                        Uri downloadUri = task.getResult();
-                        if (downloadUri != null) {
-                            user.setProfileImageUrl(downloadUri.toString());
-
-                            // Save user details to Firebase Realtime Database
-                            usersRef.child(userId).setValue(user);
-
-                            Toast.makeText(MainActivity.this, "Details saved successfully", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(MainActivity.this, "Failed to get download URL", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(MainActivity.this, "Failed to upload image", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                // Upload the image to Firebase Storage
+                uploadProfileImage(userId, user);
             } else {
-                // If no image selected, save user details without an image
+                // If no image selected, update other user details without affecting the profile picture
                 updateUserDataInDatabase(userId, user);
-                usersRef.child(userId).setValue(user);
                 Toast.makeText(MainActivity.this, "Details saved successfully", Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(MainActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void uploadProfileImage(String userId, User user) {
+        StorageReference imageRef = storageReference.child(STORAGE_PATH + userId);
+        UploadTask uploadTask = imageRef.putFile(profileImageUri);
+
+        uploadTask.continueWithTask(task -> {
+            if (!task.isSuccessful()) {
+                throw task.getException();
+            }
+            return imageRef.getDownloadUrl();
+        }).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // Image uploaded successfully, get the URL
+                Uri downloadUri = task.getResult();
+                if (downloadUri != null) {
+                    user.setProfileImageUrl(downloadUri.toString());
+
+                    // Save both userId and profile picture URL to Firebase Realtime Database
+                    usersRef.child(userId).setValue(user);
+                    Toast.makeText(MainActivity.this, "Details saved successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Failed to get download URL", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(MainActivity.this, "Failed to upload image", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void updateUserDataInDatabase(String userId, User user) {

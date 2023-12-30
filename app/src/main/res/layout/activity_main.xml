@@ -123,13 +123,6 @@
         android:text="Edit"
         android:onClick="openEditAdminInfoActivity"/>
 
-    <Button
-        android:id="@+id/buttonSave"
-        android:layout_width="299dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        android:text="Save" />
 
     <Button
         android:id="@+id/logout"
