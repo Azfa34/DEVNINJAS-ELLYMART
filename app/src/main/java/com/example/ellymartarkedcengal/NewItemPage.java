@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,6 +58,7 @@ public class NewItemPage extends AppCompatActivity {
         editTextItemName = findViewById(R.id.editTextItemName);
         editTextItemPrice = findViewById(R.id.editTextItemPrice);
         editTextItemDescription = findViewById(R.id.editTextItemDescription);
+        editTextItemPrice.addTextChangedListener(new CurrencyTextWatcher());
 
         buttonPickPhotoNewItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,10 +70,41 @@ public class NewItemPage extends AppCompatActivity {
         buttonSaveItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                saveNewItem();
+                if (isValidCurrency(editTextItemPrice.getText().toString())) {
+                    saveNewItem();
+                } else {
+                    Toast.makeText(NewItemPage.this, "Please enter a valid price with up to 2 decimal places", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
+    }
+
+    private boolean isValidCurrency(String str) {
+        // Allow digits and up to two decimal places
+        return str.matches("\\d{0,7}(\\.\\d{0,2})?") && !str.matches("\\d*\\.0$");
+    }
+
+    private class CurrencyTextWatcher implements TextWatcher {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            // Not needed
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            // Not needed
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String currentText = editable.toString();
+            if (!isValidCurrency(currentText)) {
+                // Remove the last entered character if the currency format is invalid
+                editable.delete(editable.length() - 1, editable.length());
+            }
+        }
+
     }
     private void openImagePicker() {
         Intent intent = new Intent();
