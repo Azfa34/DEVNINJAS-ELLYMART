@@ -9,12 +9,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -128,7 +126,6 @@ public class AdminCardProduct extends AppCompatActivity {
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // User clicked "No," dismiss the dialog
                 dialog.dismiss();
             }
         });
@@ -141,12 +138,11 @@ public class AdminCardProduct extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    // Successfully deleted from Firebase
-                    // Show a success message or navigate to a different screen
+
                     Toast.makeText(AdminCardProduct.this, "Product deleted successfully", Toast.LENGTH_SHORT).show();
-                    finish(); // Finish the current activity or navigate to a different screen
+                    finish();
                 } else {
-                    // Handle failure
+
                     Toast.makeText(AdminCardProduct.this, "Failed to delete product", Toast.LENGTH_SHORT).show();
                 }
             }

@@ -1,7 +1,10 @@
 package com.example.ellymartarkedcengal;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,12 +31,8 @@ public class AdminCardEditProduct extends AppCompatActivity {
         setContentView(R.layout.activity_admin_edit_product);
 
         // Get the product ID from the intent
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("productId")) {
-            String productId = intent.getStringExtra("productId");
-
-            // Now you can fetch the product details using the productId
-            // Fetch product details and update UI as needed
+        String productId = getIntent().getStringExtra("productId");
+        if (productId != null) {
             getProductDetailsById(productId);
 
             // Set up the "Update" button click listener
@@ -48,7 +47,6 @@ public class AdminCardEditProduct extends AppCompatActivity {
         }
     }
 
-    // Implement this method to fetch product details by ID from your data source
     private void getProductDetailsById(String productId) {
         DatabaseReference productRef = FirebaseDatabase.getInstance().getReference().child("products").child(productId);
 
@@ -56,16 +54,13 @@ public class AdminCardEditProduct extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // Product data exists, retrieve and update UI
                     product = dataSnapshot.getValue(Products.class);
-
                     if (product != null) {
                         // Update UI with product details
                         updateUI(product);
                     }
                 } else {
-                    // Product data does not exist
-                    // Handle the case where the product is not found
+                    // Handle if the product does not exist
                 }
             }
 
@@ -77,8 +72,6 @@ public class AdminCardEditProduct extends AppCompatActivity {
     }
 
     private void updateUI(Products product) {
-        // Update UI with product details
-        // For example, if you have TextViews and an ImageView in your activity, update them here
         TextView productNameTextView = findViewById(R.id.textView8);
         EditText editTextProductName = findViewById(R.id.editTextEditName);
         EditText editTextProductPrice = findViewById(R.id.editTextEditPrice);
@@ -89,16 +82,37 @@ public class AdminCardEditProduct extends AppCompatActivity {
             editTextProductName.setText(product.getName());
             editTextProductPrice.setText(String.valueOf(product.getPrice()));
 
-            // Check if the image URL is not empty or null before loading with Picasso
+            // Set an InputFilter to restrict the input to 2 decimal places
+            editTextProductPrice.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    String input = editable.toString();
+                    if (!isValidCurrency(input)) {
+                        editable.delete(editable.length() - 1, editable.length());
+                    }
+                }
+            });
+
             String imageUrl = product.getImageUrl();
             if (imageUrl != null && !imageUrl.isEmpty()) {
                 Picasso.get().load(imageUrl).into(productImageView);
             } else {
-                // Handle the case where the image URL is empty or null
-                // You can set a placeholder image or take any other appropriate action
                 productImageView.setImageResource(R.drawable.baseline_product_list_24);
             }
         }
+    }
+
+    private boolean isValidCurrency(String str) {
+        // Allow digits and up to two decimal points
+        return str.matches("\\d{0,7}(\\.\\d{0,2})?") && !str.matches("\\d*\\.0$");
     }
 
     private void updateProductDetails() {
@@ -106,19 +120,20 @@ public class AdminCardEditProduct extends AppCompatActivity {
         String updatedProductName = ((EditText) findViewById(R.id.editTextEditName)).getText().toString().trim();
         String updatedProductPrice = ((EditText) findViewById(R.id.editTextEditPrice)).getText().toString().trim();
 
-        // Perform validation on the updated details if needed
-
-        // Update the product details in the database
         if (product != null) {
+            // Restrict the price to two decimal places
+            if (!isValidCurrency(updatedProductPrice)) {
+                Toast.makeText(AdminCardEditProduct.this, "Invalid price format. Please enter up to two decimal places.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             DatabaseReference productRef = FirebaseDatabase.getInstance().getReference().child("products").child(product.getProductId());
             productRef.child("name").setValue(updatedProductName);
             productRef.child("price").setValue(Double.parseDouble(updatedProductPrice));
 
-            // You can also update other details like image URL if needed
-
-            // Show a success message or handle the update completion
-            // For example, you can display a Toast message
             Toast.makeText(AdminCardEditProduct.this, "Product details updated successfully", Toast.LENGTH_SHORT).show();
         }
     }
+
 }
+
