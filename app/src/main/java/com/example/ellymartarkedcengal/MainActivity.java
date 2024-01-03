@@ -1,6 +1,7 @@
 package com.example.ellymartarkedcengal;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +29,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Arrays;
+
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private Button button;
@@ -44,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView adminInfoTextView;
     private TextView adminEmailTextView;
     private TextView adminTelNumberTextView;
+
+    private SharedPreferences sharedPreferences;
+     static final String PREF_NAME = "MyPrefs";
+    static final String KEY_SELECTED_STATUS = "selectedStatus";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +71,15 @@ public class MainActivity extends AppCompatActivity {
         profileImageView = findViewById(R.id.profileImageView);
         Button selectImageButton = findViewById(R.id.btnSelectProfileImage);
 
+        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
+
         selectImageButton.setOnClickListener(v -> openImagePicker());
         loadProfileImage();
 
         updateAdminDetails();
         setUpSpinner();
+
 
         button.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
@@ -257,12 +268,27 @@ public class MainActivity extends AppCompatActivity {
         Spinner spinner = findViewById(R.id.spinner);
         spinner.setAdapter(adapter);
 
+        // Get the last selected status from SharedPreferences
+        String lastSelectedStatus = sharedPreferences.getString(KEY_SELECTED_STATUS, "Open");
+
+        // Set the last selected status in the spinner
+        int position = Arrays.asList(items).indexOf(lastSelectedStatus);
+        if (position >= 0 && position < items.length) {
+            spinner.setSelection(position);
+        }
+
         // Handle item selection
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView parentView, View selectedItemView, int position, long id) {
                 String selectedItem = items[position];
                 Toast.makeText(MainActivity.this, "Selected: " + selectedItem, Toast.LENGTH_SHORT).show();
+
+                // Update the selected status in SharedPreferences
+                sharedPreferences.edit().putString(KEY_SELECTED_STATUS, selectedItem).apply();
+
+                // Update the selected status in the Firebase Realtime Database (optional)
+                // updateStatus(selectedItem);
             }
 
             @Override
@@ -271,6 +297,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void saveUserDetails() {
         String userId = auth.getCurrentUser().getUid();

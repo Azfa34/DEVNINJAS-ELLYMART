@@ -1,6 +1,11 @@
 package com.example.ellymartarkedcengal;
 
+import static com.example.ellymartarkedcengal.MainActivity.KEY_SELECTED_STATUS;
+import static com.example.ellymartarkedcengal.MainActivity.PREF_NAME;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.text.Selection;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -25,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Dashboard extends AppCompatActivity {
@@ -39,6 +45,8 @@ public class Dashboard extends AppCompatActivity {
     private WishlistAdapter wishlistAdapter;
     private List<Products> productList;
     private List<Wishlist> wishlist;
+
+    private SharedPreferences sharedPreferences;
 
 
     @Override
@@ -93,17 +101,36 @@ public class Dashboard extends AppCompatActivity {
         setNavigationViewHeader(isAdminUser);
         fetchProductsFromDatabase();
 
+
+        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
+
         String[] items = {"Open", "On Break", "Closed"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Spinner spinner = findViewById(R.id.spinner);
         spinner.setAdapter(adapter);
+        String lastSelectedStatus = sharedPreferences.getString(KEY_SELECTED_STATUS, "Open");
+
+        spinner.setSelection(Arrays.asList(items).indexOf(lastSelectedStatus));
+        // Retrieve the operation status from the intent
+        Intent spinnerintent = getIntent();
+        if (spinnerintent.hasExtra("operationStatus")) {
+            String operationStatus = spinnerintent.getStringExtra("operationStatus");
+
+            // Set the operation status to the spinner
+            int position = Arrays.asList(items).indexOf(operationStatus);
+            if (position != -1) {
+                spinner.setSelection(position);
+            }
+        }
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView parentView, View selectedItemView, int position, long id) {
                 String selectedItem = items[position];
+                sharedPreferences.edit().putString(KEY_SELECTED_STATUS, selectedItem).apply();
                 Toast.makeText(Dashboard.this, "Selected: " + selectedItem, Toast.LENGTH_SHORT).show();
             }
 
@@ -174,10 +201,6 @@ public class Dashboard extends AppCompatActivity {
                     startActivity(intent);
                     Toast.makeText(Dashboard.this, "Notification Selected", Toast.LENGTH_SHORT).show();
 
-                } else if (itemId == R.id.productlist) {
-                    Intent intent = new Intent(Dashboard.this, ProductCatalogActivity.class);
-                    startActivity(intent);
-                    Toast.makeText(Dashboard.this, "Product List Selected", Toast.LENGTH_SHORT).show();
 
                 } else if (itemId == R.id.profile) {
                     Intent intent = new Intent(Dashboard.this, MainActivity.class);
