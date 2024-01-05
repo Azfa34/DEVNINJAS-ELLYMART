@@ -19,6 +19,10 @@
         android:theme="@style/Theme.ELLYMARTARKEDCENGAL"
         tools:targetApi="31">
 
+        <activity
+            android:name=".CustCardProduct"
+            android:label="CustCardProduct"/>
+
         <activity android:name=".AdminCardProduct"
             android:label="Product Card"/>
         <activity

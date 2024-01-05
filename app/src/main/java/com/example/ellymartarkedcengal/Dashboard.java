@@ -34,6 +34,7 @@ import java.util.List;
 public class Dashboard extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
+    private boolean isAdminUser;
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
     DatabaseReference usersRef;
@@ -76,7 +77,7 @@ public class Dashboard extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         usersRef = FirebaseDatabase.getInstance().getReference().child("users");
         Intent intent = getIntent();
-        boolean isAdminUser = intent.getBooleanExtra("isAdminUser", true);
+        isAdminUser = intent.getBooleanExtra("isAdminUser", true);
 
         productRecyclerView = findViewById(R.id.recyclerView);
         productRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -87,9 +88,18 @@ public class Dashboard extends AppCompatActivity {
             @Override
             public void onItemClick(int position) {
                 Products selectedProduct = productList.get(position);
-                openProductCardActivity(selectedProduct.getProductId());
+                if (isAdminUser) {
+                    // Only allow admins to navigate to AdminCardProduct
+                    openProductCardActivity(selectedProduct.getProductId());
+                } else {
+                    // For customers, navigate to CustCardProduct
+                    Intent intent = new Intent(Dashboard.this, CustCardProduct.class);
+                    intent.putExtra("productId", selectedProduct.getProductId());
+                    startActivity(intent);
+                }
             }
         });
+
 
         productRecyclerView.setAdapter(productAdapter);
 
@@ -221,7 +231,9 @@ public class Dashboard extends AppCompatActivity {
                 return false;
             }
         });
+
     }
+
 
     private void fetchProductsFromDatabase() {
         DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("products");
@@ -309,10 +321,16 @@ public class Dashboard extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-
     private void openProductCardActivity(String productId) {
-        Intent intent = new Intent(this, AdminCardProduct.class);
-        intent.putExtra("productId", productId);
+        Intent intent;
+        if (isAdminUser) {
+            intent = new Intent(this, AdminCardProduct.class);
+        } else {
+            // Handle customer behavior, you can show details in a different activity, for example
+            intent = new Intent(this, CustCardProduct.class);
+            // Pass the product ID or other relevant data to the customer activity
+            intent.putExtra("productId", productId);
+        }
         startActivity(intent);
     }
 }
