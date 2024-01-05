@@ -114,7 +114,7 @@ public class Dashboard extends AppCompatActivity {
 
 
 
-        String[] items = {"Open", "On Break", "Closed"};
+        String[] items = {"(Open)", "(On Break)", "(Closed)"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
