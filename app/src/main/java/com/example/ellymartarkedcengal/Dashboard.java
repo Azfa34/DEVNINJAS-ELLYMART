@@ -83,7 +83,7 @@ public class Dashboard extends AppCompatActivity {
         productRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         productList = new ArrayList<>();
 
-        // Pass an instance of the ProductAdapter.OnItemClickListener to the constructor
+
         productAdapter = new ProductAdapter(this, productList, new ProductAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {

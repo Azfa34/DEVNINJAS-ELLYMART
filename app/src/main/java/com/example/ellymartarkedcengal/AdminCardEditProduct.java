@@ -35,7 +35,7 @@ public class AdminCardEditProduct extends AppCompatActivity {
         if (productId != null) {
             getProductDetailsById(productId);
 
-            // Set up the "Update" button click listener
+
             Button updateButton = findViewById(R.id.btnProductUpdate);
             updateButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -82,7 +82,6 @@ public class AdminCardEditProduct extends AppCompatActivity {
             editTextProductName.setText(product.getName());
             editTextProductPrice.setText(String.valueOf(product.getPrice()));
 
-            // Set an InputFilter to restrict the input to 2 decimal places
             editTextProductPrice.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

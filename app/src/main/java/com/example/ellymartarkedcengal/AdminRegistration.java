@@ -60,9 +60,6 @@ public class AdminRegistration extends AppCompatActivity {
                 String adminEmail = adminEmailEditText.getText().toString();
                 String adminPassword = adminPasswordEditText.getText().toString();
 
-                // You can implement your registration logic here, e.g., store the admin data in a database.
-
-                // Display a message to indicate successful registration
                 Toast.makeText(AdminRegistration.this, "Admin registered successfully!", Toast.LENGTH_SHORT).show();
 
                 startActivity(new Intent(AdminRegistration.this, AdminLogin.class));

@@ -36,8 +36,6 @@ public class AdminCardProduct extends AppCompatActivity {
         if (intent != null && intent.hasExtra("productId")) {
             String productId = intent.getStringExtra("productId");
 
-            // Now you can fetch the product details using the productId
-            // For simplicity, let's assume you have a method to fetch product details by ID
             Products product = getProductDetailsById(productId);
 
             if (product != null) {
@@ -67,8 +65,6 @@ public class AdminCardProduct extends AppCompatActivity {
                 // Handle the error
             }
         });
-
-        // Placeholder return, the actual product details will be retrieved asynchronously
         return new Products(productId, 0.0, "", "");
     }
 

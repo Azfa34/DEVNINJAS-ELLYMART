@@ -271,7 +271,6 @@ public class MainActivity extends AppCompatActivity {
         // Get the last selected status from SharedPreferences
         String lastSelectedStatus = sharedPreferences.getString(KEY_SELECTED_STATUS, "Open");
 
-        // Set the last selected status in the spinner
         int position = Arrays.asList(items).indexOf(lastSelectedStatus);
         if (position >= 0 && position < items.length) {
             spinner.setSelection(position);
@@ -286,9 +285,6 @@ public class MainActivity extends AppCompatActivity {
 
                 // Update the selected status in SharedPreferences
                 sharedPreferences.edit().putString(KEY_SELECTED_STATUS, selectedItem).apply();
-
-                // Update the selected status in the Firebase Realtime Database (optional)
-                // updateStatus(selectedItem);
             }
 
             @Override
