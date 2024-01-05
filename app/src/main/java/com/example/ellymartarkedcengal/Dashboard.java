@@ -2,10 +2,8 @@ package com.example.ellymartarkedcengal;
 
 import static com.example.ellymartarkedcengal.MainActivity.KEY_SELECTED_STATUS;
 import static com.example.ellymartarkedcengal.MainActivity.PREF_NAME;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.text.Selection;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -47,7 +45,8 @@ public class Dashboard extends AppCompatActivity {
     private List<Wishlist> wishlist;
 
     private SharedPreferences sharedPreferences;
-
+    private TextView statusOperationTextView;
+    private Spinner spinner;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -66,6 +65,8 @@ public class Dashboard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -102,8 +103,6 @@ public class Dashboard extends AppCompatActivity {
         fetchProductsFromDatabase();
 
 
-        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-
 
         String[] items = {"Open", "On Break", "Closed"};
 
@@ -131,6 +130,10 @@ public class Dashboard extends AppCompatActivity {
             public void onItemSelected(AdapterView parentView, View selectedItemView, int position, long id) {
                 String selectedItem = items[position];
                 sharedPreferences.edit().putString(KEY_SELECTED_STATUS, selectedItem).apply();
+
+                if (statusOperationTextView != null) {
+                    statusOperationTextView.setText(selectedItem);
+                }
                 Toast.makeText(Dashboard.this, "Selected: " + selectedItem, Toast.LENGTH_SHORT).show();
             }
 
@@ -256,15 +259,31 @@ public class Dashboard extends AppCompatActivity {
             }
         });
     }
-
     private void setNavigationViewHeader(boolean isAdminUser) {
-        View headerLayout = navigationView.getHeaderView(0);
-        TextView ellysMartTextView = headerLayout.findViewById(R.id.ellys_mart_text);
-        TextView adminSiteTextView = headerLayout.findViewById(R.id.admin_site_text);
+        navigationView.getHeaderView(0).setVisibility(View.GONE);
+        navigationView.removeHeaderView(navigationView.getHeaderView(0));
 
+        View headerLayout;
+        statusOperationTextView = null;  // Initialize the variable
+
+        if (isAdminUser) {
+            headerLayout = getLayoutInflater().inflate(R.layout.admin_header, navigationView, false);
+            TextView adminSiteTextView = headerLayout.findViewById(R.id.admin_site_text);
+            adminSiteTextView.setVisibility(View.VISIBLE);
+        } else {
+            headerLayout = getLayoutInflater().inflate(R.layout.cust_header, navigationView, false);
+            statusOperationTextView = headerLayout.findViewById(R.id.statusOperation);
+            statusOperationTextView.setVisibility(View.VISIBLE);
+
+            // Set the initial value based on the saved preference
+            String lastSelectedStatus = sharedPreferences.getString(KEY_SELECTED_STATUS, "Open");
+            statusOperationTextView.setText(lastSelectedStatus);
+        }
+
+        TextView ellysMartTextView = headerLayout.findViewById(R.id.ellys_mart_text);
         ellysMartTextView.setVisibility(View.VISIBLE);
 
-        adminSiteTextView.setVisibility(isAdminUser ? View.VISIBLE : View.GONE);
+        navigationView.addHeaderView(headerLayout);
 
         if (isAdminUser) {
             navigationView.getMenu().clear();
