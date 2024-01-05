@@ -20,13 +20,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        >
 
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="124dp"
-            android:layout_height="99dp"
+            android:layout_width="151dp"
+            android:layout_height="112dp"
             android:layout_gravity="center"
             app:srcCompat="@drawable/icon_name_nobg" />
 
