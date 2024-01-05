@@ -109,6 +109,13 @@ public class Dashboard extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Spinner spinner = findViewById(R.id.spinner);
+        if (isAdminUser) {
+            // If admin, show the spinner
+            spinner.setVisibility(View.VISIBLE);
+        } else {
+            // If not admin, hide the spinner
+            spinner.setVisibility(View.GONE);
+        }
         spinner.setAdapter(adapter);
         String lastSelectedStatus = sharedPreferences.getString(KEY_SELECTED_STATUS, "Open");
 
