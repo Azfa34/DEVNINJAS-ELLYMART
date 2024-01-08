@@ -90,7 +90,7 @@ public class CustSearchActivity extends AppCompatActivity {
     private List<Products> filterList(List<Products> productList, String query) {
         List<Products> filteredList = new ArrayList<>();
         for (Products product : productList) {
-            if (product.getName().toLowerCase().contains(query.toLowerCase())) {
+            if (product.getName().toLowerCase().startsWith(query.toLowerCase())) {
                 filteredList.add(product);
             }
         }

@@ -25,7 +25,8 @@
             android:src="@android:drawable/ic_input_add"
             android:contentDescription="Add Notification"
             android:background="?android:attr/selectableItemBackground"
-            android:padding="8dp"/>
+            android:padding="8dp"
+            />
 
         <TextView
             android:id="@+id/notificationTextView"
