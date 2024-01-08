@@ -196,6 +196,12 @@ public class Dashboard extends AppCompatActivity {
                     startActivity(intent);
                     Toast.makeText(Dashboard.this, "Wishlist List Selected", Toast.LENGTH_SHORT).show();
 
+                } else if (itemId == R.id.search) {
+                        Intent intent = new Intent(Dashboard.this, CustSearchActivity.class);
+                        startActivity(intent);
+                        Toast.makeText(Dashboard.this, "Search Selected", Toast.LENGTH_SHORT).show();
+
+
                 } else if (itemId == R.id.activity) {
                     Intent intent = new Intent(Dashboard.this, ActivityReport.class);
                     startActivity(intent);

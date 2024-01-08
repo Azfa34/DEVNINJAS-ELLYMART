@@ -8,7 +8,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
 import android.widget.ImageView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,6 +25,7 @@ import android.widget.Toast;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     private List<Products> productList;
+    private List<Products> originalProductList;
     private Context context;
     private OnItemClickListener itemClickListener;
 
@@ -28,6 +33,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public ProductAdapter(Context context, List<Products> productList, OnItemClickListener itemClickListener) {
         this.context = context;
         this.productList = productList;
+        this.originalProductList = new ArrayList<>(productList);
         this.itemClickListener = itemClickListener;
     }
 
@@ -64,8 +70,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             }
         });
     }
-
-
+    public void filter(String query) {
+        query = query.toLowerCase(Locale.getDefault());
+        productList.clear();
+        if (query.length() == 0) {
+            productList.addAll(originalProductList);  // Set original data when the query is empty
+        } else {
+            for (Products product : originalProductList) {
+                if (product.getName().toLowerCase(Locale.getDefault()).contains(query)) {
+                    productList.add(product);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
 
     private int findProductIndex(String productId) {
         for (int i = 0; i < productList.size(); i++) {

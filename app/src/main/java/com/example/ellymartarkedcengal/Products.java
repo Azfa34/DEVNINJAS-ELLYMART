@@ -1,5 +1,7 @@
 package com.example.ellymartarkedcengal;
+import com.google.firebase.database.IgnoreExtraProperties;
 
+@IgnoreExtraProperties
 public class Products {
         private String productId;
         private String name;
