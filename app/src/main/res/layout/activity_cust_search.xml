@@ -12,7 +12,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:queryHint="Search products" />
-
+    <TextView
+        android:id="@+id/noResultsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="No results found"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="120dp"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:visibility="gone"
+        />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

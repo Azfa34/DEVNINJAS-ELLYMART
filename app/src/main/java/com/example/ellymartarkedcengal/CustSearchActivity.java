@@ -3,7 +3,7 @@ package com.example.ellymartarkedcengal;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.SearchView;
-
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,6 +26,7 @@ public class CustSearchActivity extends AppCompatActivity {
     private List<Products> productList;
     private List<Products> originalProductList;
     private DatabaseReference databaseReference;
+    private TextView noResultsTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class CustSearchActivity extends AppCompatActivity {
         recyclerView.setAdapter(productAdapter);
 
         searchView = findViewById(R.id.searchView);
+        noResultsTextView = findViewById(R.id.noResultsTextView); // Add this line
         databaseReference = FirebaseDatabase.getInstance().getReference().child("products");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -75,18 +77,23 @@ public class CustSearchActivity extends AppCompatActivity {
                         originalProductList.add(product);
                     }
                     productAdapter.setProducts(productList);
+                    updateNoResultsVisibility(); // Add this line
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("CustSearchActivity", "Error loading data: " + databaseError.getMessage());
             }
         });
     }
+
     private void performSearch(String query) {
         List<Products> filteredList = filterList(originalProductList, query);
         productAdapter.setProducts(filteredList);
+        updateNoResultsVisibility(); // Add this line
     }
+
     private List<Products> filterList(List<Products> productList, String query) {
         List<Products> filteredList = new ArrayList<>();
         for (Products product : productList) {
@@ -95,5 +102,13 @@ public class CustSearchActivity extends AppCompatActivity {
             }
         }
         return filteredList;
+    }
+
+    private void updateNoResultsVisibility() {
+        if (productAdapter.getItemCount() == 0) {
+            noResultsTextView.setVisibility(TextView.VISIBLE);
+        } else {
+            noResultsTextView.setVisibility(TextView.GONE);
+        }
     }
 }
