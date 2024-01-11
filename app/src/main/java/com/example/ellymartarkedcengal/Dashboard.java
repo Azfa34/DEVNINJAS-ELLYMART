@@ -331,6 +331,7 @@ public class Dashboard extends AppCompatActivity {
         Intent intent;
         if (isAdminUser) {
             intent = new Intent(this, AdminCardProduct.class);
+            intent.putExtra("productId", productId);
         } else {
             // Handle customer behavior, you can show details in a different activity, for example
             intent = new Intent(this, CustCardProduct.class);
