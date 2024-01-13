@@ -15,6 +15,7 @@
         android:text="Wishlist Updates"
         android:textSize="18sp"
         android:textStyle="bold"
+
         android:layout_marginBottom="8dp"/>
 
 
@@ -22,6 +23,7 @@
         android:id="@+id/recyclerViewWishlist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewWishlistUpdates"
         android:layout_marginBottom="16dp" />
 
     <TextView

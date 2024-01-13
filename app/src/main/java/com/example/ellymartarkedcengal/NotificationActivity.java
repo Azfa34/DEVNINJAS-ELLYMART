@@ -30,7 +30,7 @@ public class NotificationActivity extends AppCompatActivity {
     private int newCardCount = 0;
     private ScrollView scrollView;
 
-  
+    private boolean initialCardAdded = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +55,7 @@ public class NotificationActivity extends AppCompatActivity {
     }
 
     private void displayNotificationsFromFirebase() {
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -169,25 +170,36 @@ public class NotificationActivity extends AppCompatActivity {
         alertDialog.show();
     }
     private void addInitialNotificationCard() {
-        View initialCardView = getLayoutInflater().inflate(R.layout.card_notification, null);
-        ImageButton addButton = initialCardView.findViewById(R.id.imageButtonAdd);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAddNotificationDialog();
-            }
-        });
+        if (!initialCardAdded) {
+            View initialCardView = getLayoutInflater().inflate(R.layout.card_notification, null);
+            initialCardView.setTag("notificationCard");
+            ImageButton addButton = initialCardView.findViewById(R.id.imageButtonAdd);
+            addButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showAddNotificationDialog();
+                }
+            });
 
-        notificationContainer.addView(initialCardView);
+            notificationContainer.addView(initialCardView);
+
+        }
     }
 
+
     private void clearNotifications() {
+        // Clear dynamically added cards
         int childCount = notificationContainer.getChildCount();
         if (childCount > 2) {
             for (int i = childCount - 2; i >= 1; i--) {
-                notificationContainer.removeViewAt(i);
+                View childView = notificationContainer.getChildAt(i);
+                if (childView.getTag() != null && childView.getTag().equals("notificationCard")) {
+                    notificationContainer.removeViewAt(i);
+                }
             }
             newCardCount = 0;
         }
+    // Clear data from Firebase Realtime Database
+        databaseReference.removeValue();
     }
 }
