@@ -104,15 +104,6 @@
         </LinearLayout>
 
 
-
-        <Button
-            android:id="@+id/btnNotifications"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Notifications"
-            android:onClick="openNotificationActivity"
-            android:layout_marginTop="16dp"/>
-
     </LinearLayout>
     </ScrollView>
     <com.google.android.material.navigation.NavigationView

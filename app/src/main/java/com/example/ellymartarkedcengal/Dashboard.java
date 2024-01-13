@@ -161,21 +161,6 @@ public class Dashboard extends AppCompatActivity {
         });
 
 
-
-        Button btnNotification = findViewById(R.id.btnNotifications);
-        if (isAdminUser) {
-            btnNotification.setVisibility(View.VISIBLE);
-            btnNotification.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openNotificationActivity(v);
-                }
-            });
-        } else {
-            btnNotification.setVisibility(View.GONE);
-        }
-
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
